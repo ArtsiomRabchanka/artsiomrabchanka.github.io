@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Embed API Demo</title>
+<head><meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Embed API &mdash; Third Party Visualizations &mdash; Google Analytics Demos &amp; Tools</title>
+
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:600,400,300' rel='stylesheet'>
+    <link href="/public/css/index.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+    <script>
+        addEventListener('error', window.__e=function f(e){f.q=f.q||[];f.q.push(e)});
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+    <script>
+        !function() {
+            if (window.PerformanceLongTaskTiming) {
+                var g = window.__tti = {e: []};
+                g.o = new PerformanceObserver(function(l){
+                    g.e=g.e.concat(l.getEntries())
+                });
+                g.o.observe({entryTypes:['longtask']});
+            }
+        }();
+    </script>
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZG3PVVMWE"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-
-    <!-- This demo uses the Chart.js graphing library and Moment.js to do date
-     formatting and manipulation. -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
-
-    <!-- Include the ViewSelector2 component script. -->
-    <script src="/public/javascript/embed-api/components/view-selector2.js"></script>
-
-    <!-- Include the DateRangeSelector component script. -->
-    <script src="/public/javascript/embed-api/components/date-range-selector.js"></script>
-
-    <!-- Include the ActiveUsers component script. -->
-    <script src="/public/javascript/embed-api/components/active-users.js"></script>
-
-    <!-- Include the CSS that styles the charts. -->
-    <link rel="stylesheet" href="/public/css/chartjs-visualizations.css">
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -31,30 +40,926 @@
 
         gtag('config', 'G-RZG3PVVMWE');
     </script>
+
+    <script>
+        window.__trackAbandons = () => {
+            const ANALYTICS_URL = 'https://www.google-analytics.com/collect';
+            const GA_COOKIE = document.cookie.replace(
+                /(?:(?:^|.*;)\s*_ga\s*\=\s*(?:\w+\.\d\.)([^;]*).*$)|^.*$/, '$1');
+            const TRACKING_ID = 'UA-41425441-7';
+            const CLIENT_ID =  GA_COOKIE || (Math.random() * Math.pow(2, 52));
+
+            navigator.sendBeacon && navigator.sendBeacon(ANALYTICS_URL, [
+                'v=1', 't=event', 'ec=Load', 'ea=abandon', 'el=pre-load', 'ni=1',
+                'tid=' + TRACKING_ID,
+                'cid=' + CLIENT_ID,
+                'cd9' + CLIENT_ID, // client ID custom dimension
+                'ev=' + Math.round(performance.now()),
+            ].join('&'));
+        };
+        window.addEventListener('unload', window.__trackAbandons);
+    </script>
+
+
+    <script>
+
+        // Adds a progress bar if the page doesn't load after 1s.
+        setTimeout(function() {
+            var progressBar = document.createElement('div');
+            progressBar.className = 'ProgressBar Header-progressIndicator';
+            document.getElementById('header').appendChild(progressBar);
+        }, 1000);
+
+        (function(w,d,s,g,js,fs){
+            g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
+            js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
+            js.src='https://apis.google.com/js/platform.js';
+            fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
+        }(window,document,'script'));
+
+        gapi.analytics.ready(function() {
+
+            function setSignedInState() {
+                document.body.classList.remove('is-needingAuthorization');
+                document.body.classList.add('is-authorized');
+            }
+
+            function setSignedOutState() {
+                document.body.classList.remove('is-authorized');
+                document.body.classList.add('is-needingAuthorization');
+            }
+
+            function setNeedsAuthorizingState() {
+                document.body.classList.add('is-needingAuthorization');
+            }
+
+            gapi.analytics.auth.on('signIn', setSignedInState);
+            gapi.analytics.auth.on('signOut', setSignedOutState);
+            gapi.analytics.auth.once('needsAuthorization', setNeedsAuthorizingState);
+            gapi.analytics.auth.once('error', setNeedsAuthorizingState);
+
+            // Authorize this user with the client ID in sitemap.yaml
+            gapi.analytics.auth.authorize({
+
+                container: 'embed-api-auth-container',
+                userInfoLabel: '',
+                clientid: '793177639245-olst43lspv93vkoql0b9l26hmpf9kfmv.apps.googleusercontent.com',
+            });
+        });
+
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZG3PVVMWE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-RZG3PVVMWE');
+    </script>
+
 </head>
-<header>
-    <div id="embed-api-auth-container"></div>
-    <div id="view-selector-container"></div>
-    <div id="view-name"></div>
-    <div id="active-users-container"></div>
-</header>
-<body>
+<body class="Site is-loading">
+
+<aside class="Site-sidebar" id="sidebar">
+    <header class="NavHeader">
+        <a class="NavHeader-homeLink" href="/">
+    <span class="NavHeader-homeIcon">
+      <svg class="Icon" viewBox="0 0 24 24">
+        <use xlink:href="/public/images/icons.svg#icon-home"></use>
+      </svg>
+    </span>
+            <h1 class="NavHeader-title">Home</h1>
+        </a>
+        <span class="NavHeader-controls" id="sidebar-close">
+    <span class="NavHeader-controlsIcon">
+      <svg class="Icon" viewBox="0 0 24 24">
+        <use xlink:href="/public/images/icons.svg#icon-arrow-back"></use>
+      </svg>
+    </span>
+  </span>
+    </header>
+    <nav class="Nav">
+
+        <section class="Nav-section">
+            <h1 class="Nav-category">Demos &amp; Tools</h1>
+            <ol>
 
 
-<!-- Step 2: Load the library. -->
+                <li>
+                    <a class="Nav-link"
+                       href="/autotrack/">Autotrack
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/account-explorer/">Account Explorer
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/campaign-url-builder/">Campaign URL Builder
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/dimensions-metrics-explorer/">Dimensions &amp; Metrics Explorer
+
+                        <span class="Nav-status">updated</span>
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/embed-api/">Embed API
+
+                    </a>
+
+                    <ol>
+
+                        <li>
+                            <a class="Nav-link  Nav-link--nested"
+                               href="/embed-api/basic-dashboard/">Basic Dashboard
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="Nav-link  Nav-link--nested"
+                               href="/embed-api/multiple-views/">Multiple Views
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="Nav-link  Nav-link--nested"
+                               href="/embed-api/interactive-charts/">Interactive Charts
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="Nav-link  Nav-link--nested"
+                               href="/embed-api/custom-components/">Working with Custom Components
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="Nav-link  Nav-link--nested Nav-link--selected"
+                               href="/embed-api/third-party-visualizations/">Third Party Visualizations
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="Nav-link  Nav-link--nested"
+                               href="/embed-api/server-side-authorization/">Server-side Authorization
+
+                            </a>
+                        </li>
+
+                    </ol>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/enhanced-ecommerce/">Enhanced Ecommerce
+
+                        <span class="Nav-status">updated</span>
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/ga4-event-builder/">GA4 Event Builder
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/hit-builder/">Hit Builder
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/query-explorer/">Query Explorer
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/request-composer/">Request Composer
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/spreadsheet-add-on/">Spreadsheet Add-on
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/tag-assistant/">Tag Assistant
+
+                    </a>
+
+                </li>
+
+
+
+                <li>
+                    <a class="Nav-link"
+                       href="/usage-trends/">Usage Trends
+
+                    </a>
+
+                </li>
+
+
+            </ol>
+        </section>
+
+        <section class="Nav-section">
+            <h1 class="Nav-category">Resources</h1>
+            <ol>
+                <li><a class="Nav-link" href="/#about">About this Site</a></li>
+                <li><a class="Nav-link" href="/#help">Help & Feedback</a></li>
+            </ol>
+        </section>
+
+    </nav>
+</aside>
+
+
+
+
+
+<main class="Site-main">
+    <header class="Header" id="header">
+
+        <div class="Header-block">
+    <span class="Header-menu" id="header-menu">
+      <span class="Header-menuIcon">
+        <svg class="Icon" viewBox="0 0 24 24">
+          <use xlink:href="/public/images/icons.svg#icon-menu"></use>
+        </svg>
+      </span>
+    </span>
+
+            <div class="Logo" title="Google Analytics Demos and Tools">
+                <div class="Logo-full">
+                    <svg viewBox="0 0 303 26">
+                        <use xlink:href="/public/images/icons.svg#ga-developer-logo"></use>
+                    </svg>
+                </div>
+                <div class="Logo-partial">
+                    <svg viewBox="0 0 111 16">
+                        <use xlink:href="/public/images/icons.svg#google-analytics-text"></use>
+                    </svg>
+                </div>
+            </div>
+
+
+            <div class="Header-user" id="header-user">
+        <span class="Header-userIcon">
+          <svg class="Icon" viewBox="0 0 24 24">
+            <use xlink:href="/public/images/icons.svg#icon-person"></use>
+          </svg>
+        </span>
+            </div>
+
+
+            <div class="u-hidden u-lg-block">
+                <div class="Titles Titles--hero">
+                    <h1 class="Titles-main">Embed API</h1>
+
+                    <div class="Titles-sub">Third Party Visualizations</div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <aside class="Header-auth" id="header-auth">
+            <div
+                    class="Header-embedApi"
+                    id="embed-api-auth-container"
+                    ga-on="click"
+                    ga-event-category="User"
+                    ga-event-label="auth"
+                    ga-event-action="signin">
+            </div>
+            <button
+                    class="Header-signOut LinkButton"
+                    id="header-sign-out"
+                    ga-on="click"
+                    ga-event-category="User"
+                    ga-event-label="auth"
+                    ga-event-action="signout">
+                Sign Out
+            </button>
+        </aside>
+
+
+    </header>
+    <div class="Content">
+        <div class="u-lg-hidden">
+            <div class="Titles Titles--hero">
+                <h1 class="Titles-main">Embed API</h1>
+
+                <div class="Titles-sub">Third Party Visualizations</div>
+
+
+            </div>
+        </div>
+
+
+
+        <section>
+            <h2>Demo Overview</h2>
+            <p>The Embed API make it easy to query data and display it in a Google Chart. But it also allows you to access the raw data so you can display it however you want. This example uses the <a href="http://www.chartjs.org/">Chart.js</a> visualization library.</p>
+            <p>The Embed API is built on top of the <a href="https://developers.google.com/api-client-library/javascript/">Google APIs client library</a>, which means you don't just get access to the reporting API, you get access to everything.
+
+            <p>In addition to showing Chart.js visualizations, this example uses the underlying client library to query data from the <a href="https://developers.google.com/analytics/devguides/reporting/realtime/">Real Time Reporting API</a>.
+        </section>
+
+        <div class="Dashboard Dashboard--full">
+            <header class="Dashboard-header">
+                <ul class="FlexGrid">
+                    <li class="FlexGrid-item">
+                        <div class="Titles">
+                            <h1 class="Titles-main" id="view-name">Select a View</h1>
+                            <div class="Titles-sub">Various visualizations</div>
+                        </div>
+                    </li>
+                    <li class="FlexGrid-item FlexGrid-item--fixed">
+                        <div id="active-users-container"></div>
+                    </li>
+                </ul>
+                <div id="view-selector-container"></div>
+            </header>
+
+            <ul class="FlexGrid FlexGrid--halves">
+                <li class="FlexGrid-item">
+                    <div class="Chartjs">
+                        <header class="Titles">
+                            <h1 class="Titles-main">This Week vs Last Week</h1>
+                            <div class="Titles-sub">By sessions</div>
+                        </header>
+                        <figure class="Chartjs-figure" id="chart-1-container"></figure>
+                        <ol class="Chartjs-legend" id="legend-1-container"></ol>
+                    </div>
+                </li>
+                <li class="FlexGrid-item">
+                    <div class="Chartjs">
+                        <header class="Titles">
+                            <h1 class="Titles-main">This Year vs Last Year</h1>
+                            <div class="Titles-sub">By users</div>
+                        </header>
+                        <figure class="Chartjs-figure" id="chart-2-container"></figure>
+                        <ol class="Chartjs-legend" id="legend-2-container"></ol>
+                    </div>
+                </li>
+                <li class="FlexGrid-item">
+                    <div class="Chartjs">
+                        <header class="Titles">
+                            <h1 class="Titles-main">Top Browsers</h1>
+                            <div class="Titles-sub">By pageview</div>
+                        </header>
+                        <figure class="Chartjs-figure" id="chart-3-container"></figure>
+                        <ol class="Chartjs-legend" id="legend-3-container"></ol>
+                    </div>
+                </li>
+                <li class="FlexGrid-item">
+                    <div class="Chartjs">
+                        <header class="Titles">
+                            <h1 class="Titles-main">Top Countries</h1>
+                            <div class="Titles-sub">By sessions</div>
+                        </header>
+                        <figure class="Chartjs-figure" id="chart-4-container"></figure>
+                        <ol class="Chartjs-legend" id="legend-4-container"></ol>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <section>
+            <h2>How it works</h2>
+
+            <p>You can recreate the demo above by copy and pasting the following code into an HTML file running on a web server. Feel free to add additional CSS to spice it up a bit!</p>
+
+            <p>If you want to know more, check out the <a href="https://developers.google.com/analytics/devguides/reporting/embed/">Embed API documentation</a> on our developers site.</p>
+
+            <h3>Step 1: Load the Embed API library.</h3>
+
+            <pre>&lt;script&gt;
+(function(w,d,s,g,js,fs){
+  g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
+  js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
+  js.src=&#39;https://apis.google.com/js/platform.js&#39;;
+  fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load(&#39;analytics&#39;);};
+}(window,document,&#39;script&#39;));
+&lt;/script&gt;</pre>
+
+            <h3>Step 2: Add HTML containers to host the dashboard components.</h3>
+
+            <pre>&lt;header&gt;
+  &lt;div id=&#34;embed-api-auth-container&#34;&gt;&lt;/div&gt;
+  &lt;div id=&#34;view-selector-container&#34;&gt;&lt;/div&gt;
+  &lt;div id=&#34;view-name&#34;&gt;&lt;/div&gt;
+  &lt;div id=&#34;active-users-container&#34;&gt;&lt;/div&gt;
+&lt;/header&gt;
+&lt;div class=&#34;Chartjs&#34;&gt;
+  &lt;h3&gt;This Week vs Last Week (by sessions)&lt;/h3&gt;
+  &lt;figure class=&#34;Chartjs-figure&#34; id=&#34;chart-1-container&#34;&gt;&lt;/figure&gt;
+  &lt;ol class=&#34;Chartjs-legend&#34; id=&#34;legend-1-container&#34;&gt;&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&#34;Chartjs&#34;&gt;
+  &lt;h3&gt;This Year vs Last Year (by users)&lt;/h3&gt;
+  &lt;figure class=&#34;Chartjs-figure&#34; id=&#34;chart-2-container&#34;&gt;&lt;/figure&gt;
+  &lt;ol class=&#34;Chartjs-legend&#34; id=&#34;legend-2-container&#34;&gt;&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&#34;Chartjs&#34;&gt;
+  &lt;h3&gt;Top Browsers (by pageview)&lt;/h3&gt;
+  &lt;figure class=&#34;Chartjs-figure&#34; id=&#34;chart-3-container&#34;&gt;&lt;/figure&gt;
+  &lt;ol class=&#34;Chartjs-legend&#34; id=&#34;legend-3-container&#34;&gt;&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&#34;Chartjs&#34;&gt;
+  &lt;h3&gt;Top Countries (by sessions)&lt;/h3&gt;
+  &lt;figure class=&#34;Chartjs-figure&#34; id=&#34;chart-4-container&#34;&gt;&lt;/figure&gt;
+  &lt;ol class=&#34;Chartjs-legend&#34; id=&#34;legend-4-container&#34;&gt;&lt;/ol&gt;
+&lt;/div&gt;</pre>
+
+            <h3>Step 3: Load the components and their dependencies.</h3>
+
+            <pre>&lt;!-- This demo uses the Chart.js graphing library and Moment.js to do date
+     formatting and manipulation. --&gt;
+&lt;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js&#34;&gt;&lt;/script&gt;
+
+&lt;!-- Include the ViewSelector2 component script. --&gt;
+&lt;script src=&#34;/public/javascript/embed-api/components/view-selector2.js&#34;&gt;&lt;/script&gt;
+
+&lt;!-- Include the DateRangeSelector component script. --&gt;
+&lt;script src=&#34;/public/javascript/embed-api/components/date-range-selector.js&#34;&gt;&lt;/script&gt;
+
+&lt;!-- Include the ActiveUsers component script. --&gt;
+&lt;script src=&#34;/public/javascript/embed-api/components/active-users.js&#34;&gt;&lt;/script&gt;
+
+&lt;!-- Include the CSS that styles the charts. --&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;/public/css/chartjs-visualizations.css&#34;&gt;</pre>
+
+            <h3>Step 4: Write the dashboard code.</h3>
+
+            <pre>&lt;script&gt;
+
+// == NOTE ==
+// This code uses ES6 promises. If you want to use this code in a browser
+// that doesn&#39;t supporting promises natively, you&#39;ll have to include a polyfill.
+
+gapi.analytics.ready(function() {
+
+  /**
+   * Authorize the user immediately if the user has already granted access.
+   * If no access has been created, render an authorize button inside the
+   * element with the ID &#34;embed-api-auth-container&#34;.
+   */
+  gapi.analytics.auth.authorize({
+    container: &#39;embed-api-auth-container&#39;,
+    clientid: &#39;REPLACE WITH YOUR CLIENT ID&#39;
+  });
+
+
+  /**
+   * Create a new ActiveUsers instance to be rendered inside of an
+   * element with the id &#34;active-users-container&#34; and poll for changes every
+   * five seconds.
+   */
+  var activeUsers = new gapi.analytics.ext.ActiveUsers({
+    container: &#39;active-users-container&#39;,
+    pollingInterval: 5
+  });
+
+
+  /**
+   * Add CSS animation to visually show the when users come and go.
+   */
+  activeUsers.once(&#39;success&#39;, function() {
+    var element = this.container.firstChild;
+    var timeout;
+
+    this.on(&#39;change&#39;, function(data) {
+      var element = this.container.firstChild;
+      var animationClass = data.delta &gt; 0 ? &#39;is-increasing&#39; : &#39;is-decreasing&#39;;
+      element.className += (&#39; &#39; + animationClass);
+
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        element.className =
+            element.className.replace(/ is-(increasing|decreasing)/g, &#39;&#39;);
+      }, 3000);
+    });
+  });
+
+
+  /**
+   * Create a new ViewSelector2 instance to be rendered inside of an
+   * element with the id &#34;view-selector-container&#34;.
+   */
+  var viewSelector = new gapi.analytics.ext.ViewSelector2({
+    container: &#39;view-selector-container&#39;,
+  })
+  .execute();
+
+
+  /**
+   * Update the activeUsers component, the Chartjs charts, and the dashboard
+   * title whenever the user changes the view.
+   */
+  viewSelector.on(&#39;viewChange&#39;, function(data) {
+    var title = document.getElementById(&#39;view-name&#39;);
+    title.textContent = data.property.name + &#39; (&#39; + data.view.name + &#39;)&#39;;
+
+    // Start tracking active users for this view.
+    activeUsers.set(data).execute();
+
+    // Render all the of charts for this view.
+    renderWeekOverWeekChart(data.ids);
+    renderYearOverYearChart(data.ids);
+    renderTopBrowsersChart(data.ids);
+    renderTopCountriesChart(data.ids);
+  });
+
+
+  /**
+   * Draw the a chart.js line chart with data from the specified view that
+   * overlays session data for the current week over session data for the
+   * previous week.
+   */
+  function renderWeekOverWeekChart(ids) {
+
+    // Adjust `now` to experiment with different days, for testing only...
+    var now = moment(); // .subtract(3, &#39;day&#39;);
+
+    var thisWeek = query({
+      &#39;ids&#39;: ids,
+      &#39;dimensions&#39;: &#39;ga:date,ga:nthDay&#39;,
+      &#39;metrics&#39;: &#39;ga:sessions&#39;,
+      &#39;start-date&#39;: moment(now).subtract(1, &#39;day&#39;).day(0).format(&#39;YYYY-MM-DD&#39;),
+      &#39;end-date&#39;: moment(now).format(&#39;YYYY-MM-DD&#39;)
+    });
+
+    var lastWeek = query({
+      &#39;ids&#39;: ids,
+      &#39;dimensions&#39;: &#39;ga:date,ga:nthDay&#39;,
+      &#39;metrics&#39;: &#39;ga:sessions&#39;,
+      &#39;start-date&#39;: moment(now).subtract(1, &#39;day&#39;).day(0).subtract(1, &#39;week&#39;)
+          .format(&#39;YYYY-MM-DD&#39;),
+      &#39;end-date&#39;: moment(now).subtract(1, &#39;day&#39;).day(6).subtract(1, &#39;week&#39;)
+          .format(&#39;YYYY-MM-DD&#39;)
+    });
+
+    Promise.all([thisWeek, lastWeek]).then(function(results) {
+
+      var data1 = results[0].rows.map(function(row) { return +row[2]; });
+      var data2 = results[1].rows.map(function(row) { return +row[2]; });
+      var labels = results[1].rows.map(function(row) { return +row[0]; });
+
+      labels = labels.map(function(label) {
+        return moment(label, &#39;YYYYMMDD&#39;).format(&#39;ddd&#39;);
+      });
+
+      var data = {
+        labels : labels,
+        datasets : [
+          {
+            label: &#39;Last Week&#39;,
+            fillColor : &#39;rgba(220,220,220,0.5)&#39;,
+            strokeColor : &#39;rgba(220,220,220,1)&#39;,
+            pointColor : &#39;rgba(220,220,220,1)&#39;,
+            pointStrokeColor : &#39;#fff&#39;,
+            data : data2
+          },
+          {
+            label: &#39;This Week&#39;,
+            fillColor : &#39;rgba(151,187,205,0.5)&#39;,
+            strokeColor : &#39;rgba(151,187,205,1)&#39;,
+            pointColor : &#39;rgba(151,187,205,1)&#39;,
+            pointStrokeColor : &#39;#fff&#39;,
+            data : data1
+          }
+        ]
+      };
+
+      new Chart(makeCanvas(&#39;chart-1-container&#39;)).Line(data);
+      generateLegend(&#39;legend-1-container&#39;, data.datasets);
+    });
+  }
+
+
+  /**
+   * Draw the a chart.js bar chart with data from the specified view that
+   * overlays session data for the current year over session data for the
+   * previous year, grouped by month.
+   */
+  function renderYearOverYearChart(ids) {
+
+    // Adjust `now` to experiment with different days, for testing only...
+    var now = moment(); // .subtract(3, &#39;day&#39;);
+
+    var thisYear = query({
+      &#39;ids&#39;: ids,
+      &#39;dimensions&#39;: &#39;ga:month,ga:nthMonth&#39;,
+      &#39;metrics&#39;: &#39;ga:users&#39;,
+      &#39;start-date&#39;: moment(now).date(1).month(0).format(&#39;YYYY-MM-DD&#39;),
+      &#39;end-date&#39;: moment(now).format(&#39;YYYY-MM-DD&#39;)
+    });
+
+    var lastYear = query({
+      &#39;ids&#39;: ids,
+      &#39;dimensions&#39;: &#39;ga:month,ga:nthMonth&#39;,
+      &#39;metrics&#39;: &#39;ga:users&#39;,
+      &#39;start-date&#39;: moment(now).subtract(1, &#39;year&#39;).date(1).month(0)
+          .format(&#39;YYYY-MM-DD&#39;),
+      &#39;end-date&#39;: moment(now).date(1).month(0).subtract(1, &#39;day&#39;)
+          .format(&#39;YYYY-MM-DD&#39;)
+    });
+
+    Promise.all([thisYear, lastYear]).then(function(results) {
+      var data1 = results[0].rows.map(function(row) { return +row[2]; });
+      var data2 = results[1].rows.map(function(row) { return +row[2]; });
+      var labels = [&#39;Jan&#39;,&#39;Feb&#39;,&#39;Mar&#39;,&#39;Apr&#39;,&#39;May&#39;,&#39;Jun&#39;,
+                    &#39;Jul&#39;,&#39;Aug&#39;,&#39;Sep&#39;,&#39;Oct&#39;,&#39;Nov&#39;,&#39;Dec&#39;];
+
+      // Ensure the data arrays are at least as long as the labels array.
+      // Chart.js bar charts don&#39;t (yet) accept sparse datasets.
+      for (var i = 0, len = labels.length; i &lt; len; i++) {
+        if (data1[i] === undefined) data1[i] = null;
+        if (data2[i] === undefined) data2[i] = null;
+      }
+
+      var data = {
+        labels : labels,
+        datasets : [
+          {
+            label: &#39;Last Year&#39;,
+            fillColor : &#39;rgba(220,220,220,0.5)&#39;,
+            strokeColor : &#39;rgba(220,220,220,1)&#39;,
+            data : data2
+          },
+          {
+            label: &#39;This Year&#39;,
+            fillColor : &#39;rgba(151,187,205,0.5)&#39;,
+            strokeColor : &#39;rgba(151,187,205,1)&#39;,
+            data : data1
+          }
+        ]
+      };
+
+      new Chart(makeCanvas(&#39;chart-2-container&#39;)).Bar(data);
+      generateLegend(&#39;legend-2-container&#39;, data.datasets);
+    })
+    .catch(function(err) {
+      console.error(err.stack);
+    });
+  }
+
+
+  /**
+   * Draw the a chart.js doughnut chart with data from the specified view that
+   * show the top 5 browsers over the past seven days.
+   */
+  function renderTopBrowsersChart(ids) {
+
+    query({
+      &#39;ids&#39;: ids,
+      &#39;dimensions&#39;: &#39;ga:browser&#39;,
+      &#39;metrics&#39;: &#39;ga:pageviews&#39;,
+      &#39;sort&#39;: &#39;-ga:pageviews&#39;,
+      &#39;max-results&#39;: 5
+    })
+    .then(function(response) {
+
+      var data = [];
+      var colors = [&#39;#4D5360&#39;,&#39;#949FB1&#39;,&#39;#D4CCC5&#39;,&#39;#E2EAE9&#39;,&#39;#F7464A&#39;];
+
+      response.rows.forEach(function(row, i) {
+        data.push({ value: +row[1], color: colors[i], label: row[0] });
+      });
+
+      new Chart(makeCanvas(&#39;chart-3-container&#39;)).Doughnut(data);
+      generateLegend(&#39;legend-3-container&#39;, data);
+    });
+  }
+
+
+  /**
+   * Draw the a chart.js doughnut chart with data from the specified view that
+   * compares sessions from mobile, desktop, and tablet over the past seven
+   * days.
+   */
+  function renderTopCountriesChart(ids) {
+    query({
+      &#39;ids&#39;: ids,
+      &#39;dimensions&#39;: &#39;ga:country&#39;,
+      &#39;metrics&#39;: &#39;ga:sessions&#39;,
+      &#39;sort&#39;: &#39;-ga:sessions&#39;,
+      &#39;max-results&#39;: 5
+    })
+    .then(function(response) {
+
+      var data = [];
+      var colors = [&#39;#4D5360&#39;,&#39;#949FB1&#39;,&#39;#D4CCC5&#39;,&#39;#E2EAE9&#39;,&#39;#F7464A&#39;];
+
+      response.rows.forEach(function(row, i) {
+        data.push({
+          label: row[0],
+          value: +row[1],
+          color: colors[i]
+        });
+      });
+
+      new Chart(makeCanvas(&#39;chart-4-container&#39;)).Doughnut(data);
+      generateLegend(&#39;legend-4-container&#39;, data);
+    });
+  }
+
+
+  /**
+   * Extend the Embed APIs `gapi.analytics.report.Data` component to
+   * return a promise the is fulfilled with the value returned by the API.
+   * @param {Object} params The request parameters.
+   * @return {Promise} A promise.
+   */
+  function query(params) {
+    return new Promise(function(resolve, reject) {
+      var data = new gapi.analytics.report.Data({query: params});
+      data.once(&#39;success&#39;, function(response) { resolve(response); })
+          .once(&#39;error&#39;, function(response) { reject(response); })
+          .execute();
+    });
+  }
+
+
+  /**
+   * Create a new canvas inside the specified element. Set it to be the width
+   * and height of its container.
+   * @param {string} id The id attribute of the element to host the canvas.
+   * @return {RenderingContext} The 2D canvas context.
+   */
+  function makeCanvas(id) {
+    var container = document.getElementById(id);
+    var canvas = document.createElement(&#39;canvas&#39;);
+    var ctx = canvas.getContext(&#39;2d&#39;);
+
+    container.innerHTML = &#39;&#39;;
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+    container.appendChild(canvas);
+
+    return ctx;
+  }
+
+
+  /**
+   * Create a visual legend inside the specified element based off of a
+   * Chart.js dataset.
+   * @param {string} id The id attribute of the element to host the legend.
+   * @param {Array.&lt;Object&gt;} items A list of labels and colors for the legend.
+   */
+  function generateLegend(id, items) {
+    var legend = document.getElementById(id);
+    legend.innerHTML = items.map(function(item) {
+      var color = item.color || item.fillColor;
+      var label = item.label;
+      return &#39;&lt;li&gt;&lt;i style=&#34;background:&#39; + color + &#39;&#34;&gt;&lt;/i&gt;&#39; +
+          escapeHtml(label) + &#39;&lt;/li&gt;&#39;;
+    }).join(&#39;&#39;);
+  }
+
+
+  // Set some global Chart.js defaults.
+  Chart.defaults.global.animationSteps = 60;
+  Chart.defaults.global.animationEasing = &#39;easeInOutQuart&#39;;
+  Chart.defaults.global.responsive = true;
+  Chart.defaults.global.maintainAspectRatio = false;
+
+
+  /**
+   * Escapes a potentially unsafe HTML string.
+   * @param {string} str An string that may contain HTML entities.
+   * @return {string} The HTML-escaped string.
+   */
+  function escapeHtml(str) {
+    var div = document.createElement(&#39;div&#39;);
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+});
+&lt;/script&gt;</pre>
+
+        </section>
+
+
+
+
+        <aside id="tech-info" class="TechInfo">
+            <svg class="TechInfo-icon" viewBox="0 0 24 24">
+                <use xlink:href="/public/images/icons.svg#icon-info-outline"></use>
+            </svg>
+            <div class="TechInfo-content">
+                <h1 class="TechInfo-title">Google Analytics technology used in this demo</h1>
+
+                The Third Party Visualizations demo uses the <code>Data</code> component of the <a href="https://developers.google.com/analytics/devguides/reporting/embed/">Embed API</a>, which queries the <a href="https://developers.google.com/analytics/devguides/reporting/core/v3/">Core Reporting API</a> behind the scenes. It also uses a custom <code>ViewSelector2</code> component, which uses the <a href="https://developers.google.com/analytics/devguides/config/mgmt/">Management API</a> to get a list of accounts the current user can access. Lastly, it uses a custom <code>ActiveUsers</code> component to query the <a href="https://developers.google.com/analytics/devguides/reporting/realtime/">Real Time Reporting API</a> and see how many users are on the site now.
+
+            </div>
+        </aside>
+
+
+
+    </div>
+</main>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+<!-- This demo uses the Chart.js graphing library and Moment.js to do date
+     formatting and manipulation. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+
+<!-- Include the ViewSelector2 component script. -->
+<script src="/public/javascript/embed-api/components/view-selector2.js"></script>
+
+<!-- Include the DateRangeSelector component script. -->
+<script src="/public/javascript/embed-api/components/date-range-selector.js"></script>
+
+<!-- Include the ActiveUsers component script. -->
+<script src="/public/javascript/embed-api/components/active-users.js"></script>
+
+<!-- Include the CSS that styles the charts. -->
+<link rel="stylesheet" href="/public/css/chartjs-visualizations.css">
+
+
+<script src="/public/javascript/common.js"></script>
+<script src="/public/javascript/index.js"></script>
+
+<script src="/public/javascript/embed-api.js"></script>
 
 <script>
-    (function(w,d,s,g,js,fs){
-        g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
-        js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
-        js.src='https://apis.google.com/js/platform.js';
-        fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
-    }(window,document,'script'));
-</script>
-
-
-<script>
-
     // == NOTE ==
     // This code uses ES6 promises. If you want to use this code in a browser
     // that doesn't supporting promises natively, you'll have to include a polyfill.
