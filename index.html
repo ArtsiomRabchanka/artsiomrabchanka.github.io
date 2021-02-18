@@ -18,6 +18,7 @@
 
 <section id="auth-button"></section>
 <section id="view-selector"></section>
+<section id="view-selector1"></section>
 <section id="timeline"></section>
 
 <!-- Step 2: Load the library. -->
@@ -47,6 +48,10 @@
 
         var viewSelector = new gapi.analytics.ViewSelector({
             container: 'view-selector'
+        });
+
+        var viewSelector1 = new gapi.analytics.ViewSelector({
+            container: 'view-selector1'
         });
 
         // Step 5: Create the timeline chart.
@@ -84,6 +89,9 @@
         gapi.analytics.auth.on('success', function(response) {
             viewSelector.execute();
         });
+        gapi.analytics.auth.on('success', function(response) {
+            viewSelector1.execute();
+        });
 
         viewSelector.on('change', function(ids) {
             var newIds = {
@@ -92,6 +100,13 @@
                 }
             }
             timeline.set(newIds).execute();
+        });
+        viewSelector1.on('change', function(ids) {
+            var newIds = {
+                query: {
+                    ids: ids
+                }
+            }
             timeline1.set(newIds).execute();
         });
     });
