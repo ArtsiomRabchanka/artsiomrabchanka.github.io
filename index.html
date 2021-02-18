@@ -65,6 +65,20 @@
             }
         });
 
+        var timeline1 = new gapi.analytics.googleCharts.DataChart({
+            reportType: 'ga',
+            query: {
+                'dimensions': 'ga:date',
+                'metrics': 'ga:sessions',
+                'start-date': '30daysAgo',
+                'end-date': 'yesterday',
+            },
+            chart: {
+                type: 'LINE',
+                container: 'timeline'
+            }
+        });
+
         // Step 6: Hook up the components to work together.
 
         gapi.analytics.auth.on('success', function(response) {
@@ -78,6 +92,7 @@
                 }
             }
             timeline.set(newIds).execute();
+            timeline1.set(newIds).execute();
         });
     });
 </script>
