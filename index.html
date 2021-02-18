@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Embed API Demo</title>
+    <meta charset="utf-8">
+    <title>Hello Analytics Reporting API V4</title>
+    <meta name="google-signin-client_id" content="533408969378-ue74g5a1epbu0o3cm57pvcvc0764qcb1.apps.googleusercontent.com">
+    <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZG3PVVMWE"></script>
     <script>
@@ -14,104 +17,53 @@
 </head>
 <body>
 
-<!-- Step 1: Create the containing elements. -->
+<h1>Hello Analytics Reporting API V4</h1>
 
-<section id="auth-button"></section>
-<section id="view-selector"></section>
-<section id="timeline"></section>
+<!-- The Sign-in button. This will run `queryReports()` on success. -->
+<p class="g-signin2" data-onsuccess="queryReports"></p>
 
-<section id="view-selector1"></section>
-<section id="timeline1"></section>
-
-<!-- Step 2: Load the library. -->
+<!-- The API response will be printed here. -->
+<textarea cols="80" rows="20" id="query-output"></textarea>
 
 <script>
-    (function(w,d,s,g,js,fjs){
-        g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(cb){this.q.push(cb)}};
-        js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
-        js.src='https://apis.google.com/js/platform.js';
-        fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
-    }(window,document,'script'));
+    // Replace with your view ID.
+    var VIEW_ID = '237796885';
+
+    // Query the API and print the results to the page.
+    function queryReports() {
+        gapi.client.request({
+            path: '/v4/reports:batchGet',
+            root: 'https://analyticsreporting.googleapis.com/',
+            method: 'POST',
+            body: {
+                reportRequests: [
+                    {
+                        viewId: VIEW_ID,
+                        dateRanges: [
+                            {
+                                startDate: '7daysAgo',
+                                endDate: 'today'
+                            }
+                        ],
+                        metrics: [
+                            {
+                                expression: 'ga:sessions'
+                            }
+                        ]
+                    }
+                ]
+            }
+        }).then(displayResults, console.error.bind(console));
+    }
+
+    function displayResults(response) {
+        var formattedJson = JSON.stringify(response.result, null, 2);
+        document.getElementById('query-output').value = formattedJson;
+    }
 </script>
 
-<script>
-    gapi.analytics.ready(function() {
+<!-- Load the JavaScript API client and Sign-in library. -->
+<script src="https://apis.google.com/js/client:platform.js"></script>
 
-        // Step 3: Authorize the user.
-
-        var CLIENT_ID = '533408969378-ue74g5a1epbu0o3cm57pvcvc0764qcb1.apps.googleusercontent.com';
-
-        gapi.analytics.auth.authorize({
-            container: 'auth-button',
-            clientid: CLIENT_ID,
-        });
-
-        // Step 4: Create the view selector.
-
-        var viewSelector = new gapi.analytics.ViewSelector({
-            container: 'view-selector'
-        });
-
-        var viewSelector1 = new gapi.analytics.ViewSelector({
-            container: 'view-selector1'
-        });
-
-        // Step 5: Create the timeline chart.
-
-        var timeline = new gapi.analytics.googleCharts.DataChart({
-            reportType: 'ga',
-            query: {
-                'dimensions': 'ga:date',
-                'metrics': 'ga:sessions',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday',
-            },
-            chart: {
-                type: 'LINE',
-                container: 'timeline'
-            }
-        });
-
-        var timeline1 = new gapi.analytics.googleCharts.DataChart({
-            reportType: 'ga',
-            query: {
-                'dimensions': 'ga:date',
-                'metrics': 'ga:sessions',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday',
-            },
-            chart: {
-                type: 'LINE',
-                container: 'timeline1'
-            }
-        });
-
-        // Step 6: Hook up the components to work together.
-
-        gapi.analytics.auth.on('success', function(response) {
-            viewSelector.execute();
-        });
-        gapi.analytics.auth.on('success', function(response) {
-            viewSelector1.execute();
-        });
-
-        viewSelector.on('change', function(ids) {
-            var newIds = {
-                query: {
-                    ids: ids
-                }
-            }
-            timeline.set(newIds).execute();
-        });
-        viewSelector1.on('change', function(ids) {
-            var newIds = {
-                query: {
-                    ids: ids
-                }
-            }
-            timeline1.set(newIds).execute();
-        });
-    });
-</script>
 </body>
 </html>
