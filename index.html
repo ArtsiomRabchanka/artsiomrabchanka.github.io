@@ -14,16 +14,11 @@
 </head>
 <body>
 
+
 <!-- Step 1: Create the containing elements. -->
 
 <section id="auth-button"></section>
-<section id="view-selector"></section>
 <section id="timeline"></section>
-
-<section id="view-selector1"></section>
-<section id="timeline1"></section>
-
-<div class="ActiveUsers"></div>
 
 <!-- Step 2: Load the library. -->
 
@@ -37,189 +32,169 @@
 </script>
 
 <script>
-    gapi.analytics.ready(function() {
+    var profiles;
+    var curProfile = 0;
 
-        // Step 3: Authorize the user.
+    function getProfiles(cb) {
+        //do we have a cached version?
+        if(sessionStorage["gaProfiles"]) {
+            console.log("profiles fetched from cache");
+            cb(JSON.parse(sessionStorage["gaProfiles"]));
+            return;
+        }
+
+        gapi.client.analytics.management.accounts.list().then(function(res) {
+            var accountId = res.result.items[0].id;
+            var profiles = [];
+            gapi.client.analytics.management.webproperties.list({'accountId': accountId}).then(function(res) {
+
+                res.result.items.forEach(function(item) {
+                    if(item.defaultProfileId) profiles.push({id:"ga:"+item.defaultProfileId,name:item.name});
+                });
+                sessionStorage["gaProfiles"] = JSON.stringify(profiles);
+                cb(profiles);
+            });
+        });
+    }
+
+    //Credit: https://ga-dev-tools.appspot.com/embed-api/third-party-visualizations/
+    function query(params) {
+        return new Promise(function(resolve, reject) {
+            var data = new gapi.analytics.report.Data({query: params});
+            data.once('success', function(response) { resolve(response); })
+                .once('error', function(response) { reject(response); })
+                .execute();
+        });
+    }
+
+    function makeCanvas(id) {
+        var container = document.getElementById(id);
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+
+        container.innerHTML = '';
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+        container.appendChild(canvas);
+
+        return ctx;
+    }
+
+    function processProfiles() {
+        console.log("working on profile "+profiles[curProfile].name);
+
+        var now = moment();
+        console.log('this week',moment(now).subtract(1, 'day').day(0).format('YYYY-MM-DD'),moment(now).format('YYYY-MM-DD') );
+        console.log('this week',moment(now).subtract(8, 'day').format('YYYY-MM-DD'),moment(now).subtract(1,'day').format('YYYY-MM-DD') );
+        console.log('last week',moment(now).subtract(15, 'day').format('YYYY-MM-DD'),moment(now).subtract(8,'day').format('YYYY-MM-DD') );
+        //console.log('last week',moment(now).subtract(1, 'day').day(0).subtract(1, 'week').format('YYYY-MM-DD'),moment(now).subtract(1, 'day').day(6).subtract(1, 'week').format('YYYY-MM-DD') )
+
+        var id = profiles[curProfile].id;
+
+        var thisWeek = query({
+            'ids': id,
+            'dimensions': 'ga:date,ga:nthDay',
+            'metrics': 'ga:pageviews',
+            'start-date': moment(now).subtract(8, 'day').format('YYYY-MM-DD'),
+            'end-date': moment(now).subtract(1,'day').format('YYYY-MM-DD')
+        });
+
+        var lastWeek = query({
+            'ids': id,
+            'dimensions': 'ga:date,ga:nthDay',
+            'metrics': 'ga:pageviews',
+            'start-date': moment(now).subtract(15, 'day').subtract(1, 'week')
+                .format('YYYY-MM-DD'),
+            'end-date': moment(now).subtract(8, 'day').subtract(1, 'week')
+                .format('YYYY-MM-DD')
+        });
+
+
+        Promise.all([thisWeek, lastWeek]).then(function(results) {
+            console.log("Promise.all");console.dir(results);
+
+            var data1 = results[0].rows.map(function(row) { return +row[2]; });
+            var data2 = results[1].rows.map(function(row) { return +row[2]; });
+            var labels = results[1].rows.map(function(row) { return +row[0]; });
+
+            var totalThisWeek = results[0].totalsForAllResults["ga:pageviews"];
+            var totalLastWeek = results[1].totalsForAllResults["ga:pageviews"];
+            var percChange = (((totalThisWeek - totalLastWeek) / totalLastWeek) * 100).toFixed(2);
+            console.log(totalLastWeek, totalThisWeek, percChange);
+
+            labels = labels.map(function(label) {
+                return moment(label, 'YYYYMMDD').format('ddd');
+            });
+
+            var data = {
+                labels : labels,
+                datasets : [
+                    {
+                        label: 'Last Week',
+                        fillColor : 'rgba(220,220,220,0.5)',
+                        strokeColor : 'rgba(220,220,220,1)',
+                        pointColor : 'rgba(220,220,220,1)',
+                        pointStrokeColor : '#fff',
+                        data : data2
+                    },
+                    {
+                        label: 'This Week',
+                        fillColor : 'rgba(151,187,205,0.5)',
+                        strokeColor : 'rgba(151,187,205,1)',
+                        pointColor : 'rgba(151,187,205,1)',
+                        pointStrokeColor : '#fff',
+                        data : data1
+                    }
+                ]
+            };
+
+            var titleStr = profiles[curProfile].name + " ";
+            if(totalLastWeek > 0 && totalThisWeek > 0) {
+                if(percChange < 0) {
+                    titleStr += "<span class='down'>(Down "+Math.abs(percChange) + "%)</span>";
+                } else {
+                    titleStr += "<span class='up'>(Up "+percChange + "%)</span>";
+                }
+            }
+
+            $("body").append("<div class='reportContainer'><div class='chartTitleContainer'>"+titleStr+"</div><div class='chartContainer' id='chart-"+curProfile+"-container'></div></div>");
+
+            new Chart(makeCanvas('chart-'+curProfile+'-container')).Line(data);
+
+            if(curProfile+1 < profiles.length) {
+                curProfile++;
+                //settimeout to try to avoid GA rate limits
+                setTimeout(processProfiles,200);
+            }
+        });
+    }
+
+    gapi.analytics.ready(function() {
 
         var CLIENT_ID = '533408969378-ue74g5a1epbu0o3cm57pvcvc0764qcb1.apps.googleusercontent.com';
 
         gapi.analytics.auth.authorize({
             container: 'auth-button',
             clientid: CLIENT_ID,
+            userInfoLabel:""
         });
-
-        // Step 4: Create the view selector.
-
-        var viewSelector = new gapi.analytics.ViewSelector({
-            container: 'view-selector'
-        });
-
-        var viewSelector1 = new gapi.analytics.ViewSelector({
-            container: 'view-selector1'
-        });
-
-        // Step 5: Create the timeline chart.
-
-        var timeline = new gapi.analytics.googleCharts.DataChart({
-            reportType: 'ga',
-            query: {
-                'dimensions': 'ga:date',
-                'metrics': 'ga:sessions',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday',
-            },
-            chart: {
-                type: 'LINE',
-                container: 'timeline'
-            }
-        });
-
-        var timeline1 = new gapi.analytics.googleCharts.DataChart({
-            reportType: 'ga',
-            query: {
-                'dimensions': 'ga:date',
-                'metrics': 'ga:sessions',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday',
-            },
-            chart: {
-                type: 'LINE',
-                container: 'timeline1'
-            }
-        });
-
-        // Step 6: Hook up the components to work together.
 
         gapi.analytics.auth.on('success', function(response) {
-            viewSelector.execute();
-        });
-        gapi.analytics.auth.on('success', function(response) {
-            viewSelector1.execute();
-        });
-
-        viewSelector.on('change', function(ids) {
-            var newIds = {
-                query: {
-                    ids: ids
-                }
-            }
-            timeline.set(newIds).execute();
-        });
-        viewSelector1.on('change', function(ids) {
-            var newIds = {
-                query: {
-                    ids: ids
-                }
-            }
-            timeline1.set(newIds).execute();
-        });
-
-
-
-
-
-
-    });
-
-    gapi.analytics.ready(function() {
-        gapi.analytics.createComponent('ActiveUsers', {
-
-            initialize: function() {
-                this.activeUsers = 0;
-                gapi.analytics.auth.once('signOut', this.handleSignOut_.bind(this));
-            },
-
-            execute: function() {
-                // Stop any polling currently going on.
-                if (this.polling_) {
-                    this.stop();
-                }
-
-                this.render_();
-
-                // Wait until the user is authorized.
-                if (gapi.analytics.auth.isAuthorized()) {
-                    this.pollActiveUsers_();
-                } else {
-                    gapi.analytics.auth.once('signIn', this.pollActiveUsers_.bind(this));
-                }
-            },
-
-            stop: function() {
-                clearTimeout(this.timeout_);
-                this.polling_ = false;
-                this.emit('stop', {activeUsers: this.activeUsers});
-            },
-
-            render_: function() {
-                const opts = this.get();
-
-                // Render the component inside the container.
-                this.container = typeof opts.container == 'string' ?
-                    document.getElementById(opts.container) : opts.container;
-
-                this.container.innerHTML = opts.template || this.template;
-                this.container.querySelector('b').innerHTML = this.activeUsers;
-            },
-
-            pollActiveUsers_: function() {
-                const options = this.get();
-                const pollingInterval = (options.pollingInterval || 5) * 1000;
-
-                if (isNaN(pollingInterval) || pollingInterval < 5000) {
-                    throw new Error('Frequency must be 5 seconds or more.');
-                }
-
-                this.polling_ = true;
-                gapi.client.analytics.data.realtime
-                    .get({ids: options.ids, metrics: 'rt:activeUsers'})
-                    .then(function(response) {
-                        const result = response.result;
-                        const newValue = result.totalResults ? +result.rows[0][0] : 0;
-                        const oldValue = this.activeUsers;
-
-                        this.emit('success', {activeUsers: this.activeUsers});
-
-                        if (newValue != oldValue) {
-                            this.activeUsers = newValue;
-                            this.onChange_(newValue - oldValue);
-                        }
-
-                        if (this.polling_ == true) {
-                            this.timeout_ = setTimeout(this.pollActiveUsers_.bind(this),
-                                pollingInterval);
-                        }
-                    }.bind(this));
-            },
-
-            onChange_: function(delta) {
-                const valueContainer = this.container.querySelector('b');
-                if (valueContainer) valueContainer.innerHTML = this.activeUsers;
-
-                this.emit('change', {activeUsers: this.activeUsers, delta: delta});
-                if (delta > 0) {
-                    this.emit('increase', {activeUsers: this.activeUsers, delta: delta});
-                } else {
-                    this.emit('decrease', {activeUsers: this.activeUsers, delta: delta});
-                }
-            },
-
-            handleSignOut_: function() {
-                this.stop();
-                gapi.analytics.auth.once('signIn', this.handleSignIn_.bind(this));
-            },
-
-            handleSignIn_: function() {
-                this.pollActiveUsers_();
-                gapi.analytics.auth.once('signOut', this.handleSignOut_.bind(this));
-            },
-
-            template:
-                '<div class="ActiveUsers">' +
-                'Active Users: <b class="ActiveUsers-value"></b>' +
-                '</div>',
+            //hide the auth-button
+            document.querySelector("#auth-button").style.display='none';
+            console.log("get profiles");
+            getProfiles(function(profs) {
+                window.profiles = profs;
+                processProfiles();
+            });
 
         });
+
+        Chart.defaults.global.animationSteps = 60;
+        Chart.defaults.global.animationEasing = 'easeInOutQuart';
+        Chart.defaults.global.responsive = true;
+        Chart.defaults.global.maintainAspectRatio = false;
+
     });
 </script>
 </body>
