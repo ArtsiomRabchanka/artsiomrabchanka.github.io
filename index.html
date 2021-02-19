@@ -18,10 +18,6 @@
 
 <section id="auth-button"></section>
 <section id="view-selector"></section>
-<section id="timeline"></section>
-
-<section id="view-selector1"></section>
-<section id="timeline1"></section>
 
 <!-- Step 2: Load the library. -->
 
@@ -65,9 +61,15 @@
                 }
             }
             console.log(newIds);
+            var viewId = newIds.query.ids;
+            console.log(viewId);
         });
 
     });
 </script>
+
+<!-- Load the JavaScript API client and Sign-in library. -->
+<script src="https://apis.google.com/js/client:platform.js"></script>
+
 </body>
 </html>
