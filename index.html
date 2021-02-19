@@ -46,72 +46,13 @@
             clientid: CLIENT_ID,
         });
 
-        // Step 4: Create the view selector.
-
-        var viewSelector = new gapi.analytics.ViewSelector({
-            container: 'view-selector'
-        });
-
-        var viewSelector1 = new gapi.analytics.ViewSelector({
-            container: 'view-selector1'
-        });
-
-        // Step 5: Create the timeline chart.
-
-        var timeline = new gapi.analytics.googleCharts.DataChart({
-            reportType: 'ga',
+        var newIds = {
             query: {
-                'dimensions': 'ga:date',
-                'metrics': 'ga:sessions',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday',
-            },
-            chart: {
-                type: 'LINE',
-                container: 'timeline'
+                ids: ids
             }
-        });
+        }
+        console.log(newIds);
 
-        var timeline1 = new gapi.analytics.googleCharts.DataChart({
-            reportType: 'ga',
-            query: {
-                'dimensions': 'ga:date',
-                'metrics': 'ga:sessions',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday',
-            },
-            chart: {
-                type: 'LINE',
-                container: 'timeline1'
-            }
-        });
-
-        // Step 6: Hook up the components to work together.
-
-        gapi.analytics.auth.on('success', function(response) {
-            viewSelector.execute();
-        });
-        gapi.analytics.auth.on('success', function(response) {
-            viewSelector1.execute();
-        });
-
-        viewSelector.on('change', function(ids) {
-            var newIds = {
-                query: {
-                    ids: ids
-                }
-            }
-            timeline.set(newIds).execute();
-            console.log(newIds);
-        });
-        viewSelector1.on('change', function(ids) {
-            var newIds = {
-                query: {
-                    ids: ids
-                }
-            }
-            timeline1.set(newIds).execute();
-        });
     });
 </script>
 </body>
