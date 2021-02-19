@@ -19,6 +19,13 @@
 <section id="auth-button"></section>
 <section id="view-selector"></section>
 
+<!-- The Sign-in button. This will run `queryReports()` on success. -->
+<p class="g-signin2" data-onsuccess="queryReports"></p>
+
+<!-- The API response will be printed here. -->
+<textarea cols="80" rows="20" id="query-output"></textarea>
+
+
 <!-- Step 2: Load the library. -->
 
 <script>
@@ -65,7 +72,44 @@
             // var viewIdValue = viewIdGa.str.replace("ga:", "");
             var viewId = newIds.query.ids.replace("ga:", "");
             console.log(viewId);
+
+            // Replace with your view ID.
+            var VIEW_ID = viewId;
+
+            // Query the API and print the results to the page.
+            function queryReports() {
+                gapi.client.request({
+                    path: '/v4/reports:batchGet',
+                    root: 'https://analyticsreporting.googleapis.com/',
+                    method: 'POST',
+                    body: {
+                        reportRequests: [
+                            {
+                                viewId: VIEW_ID,
+                                dateRanges: [
+                                    {
+                                        startDate: '7daysAgo',
+                                        endDate: 'today'
+                                    }
+                                ],
+                                metrics: [
+                                    {
+                                        expression: 'ga:sessions'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }).then(displayResults, console.error.bind(console));
+            }
+
+            function displayResults(response) {
+                var formattedJson = JSON.stringify(response.result, null, 2);
+                document.getElementById('query-output').value = formattedJson;
+            }
         });
+
+
 
     });
 </script>
