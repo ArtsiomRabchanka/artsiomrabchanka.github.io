@@ -22,6 +22,10 @@
     </script>
 </head>
 <body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 <!-- Step 1: Create the containing elements. -->
 
@@ -45,6 +49,8 @@
         fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
     }(window,document,'script'));
 </script>
+
+
 
 <script>
     gapi.analytics.ready(function() {
@@ -194,10 +200,6 @@
 </script>
 
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 <figure class="highcharts-figure">
     <div id="container"></div>
