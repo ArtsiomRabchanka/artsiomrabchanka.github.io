@@ -88,17 +88,19 @@
                         reportRequests: [
                             {
                                 viewId: VIEW_ID,
-                                dateRanges: [
+                                "dateRanges":[
                                     {
-                                        startDate: '7daysAgo',
-                                        endDate: 'today'
-                                    }
-                                ],
-                                metrics: [
+                                        "startDate":"2021-01-01",
+                                        "endDate":"2022-06-30"
+                                    }],
+                                "metrics":[
                                     {
-                                        expression: 'ga:sessions'
-                                    }
-                                ]
+                                        "expression":"ga:sessions"
+                                    }],
+                                "dimensions": [
+                                    {
+                                        "name":"ga:browser"
+                                    }]
                             }
                         ]
                     }
