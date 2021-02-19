@@ -46,12 +46,14 @@
             clientid: CLIENT_ID,
         });
 
-        var newIds = {
-            query: {
-                ids: ids
+        viewSelector.on('change', function(ids) {
+            var newIds = {
+                query: {
+                    ids: ids
+                }
             }
-        }
-        console.log(newIds);
+            console.log(newIds);
+        });
 
     });
 </script>
