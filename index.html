@@ -46,6 +46,16 @@
             clientid: CLIENT_ID,
         });
 
+        // Step 4: Create the view selector.
+
+        var viewSelector = new gapi.analytics.ViewSelector({});
+
+        // Step 6: Hook up the components to work together.
+
+        gapi.analytics.auth.on('success', function(response) {
+            viewSelector.execute();
+        });
+
         viewSelector.on('change', function(ids) {
             var newIds = {
                 query: {
