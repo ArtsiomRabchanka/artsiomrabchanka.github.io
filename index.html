@@ -153,7 +153,7 @@
                     root: 'https://analyticsreporting.googleapis.com/',
                     method: 'POST',
                     body: {
-                        mapRequests: [
+                        reportRequests: [
                             {
                                 viewId: VIEW_ID,
                                 "dimensions": [
@@ -258,9 +258,10 @@
 
             console.log('spreadsheet data', data);
             data[18] = {
+                code: 'BY',
                 name: 'Belarus',
-                value: 6,
-                code: 'BY'
+                value: 6
+
             }
 
             // Initiate the chart
