@@ -78,6 +78,8 @@
 <script>
     gapi.analytics.ready(function() {
 
+        // init
+
         // Step 3: Authorize the user.
 
         var CLIENT_ID = '533408969378-ue74g5a1epbu0o3cm57pvcvc0764qcb1.apps.googleusercontent.com';
@@ -114,8 +116,9 @@
             // Replace with your view ID.
             var VIEW_ID = viewId;
 
-            // Query the API and print the results to the page.
-            function queryReports() {
+
+            // Display circle diagram browsers and numnber of visits statistics
+            function queryCircle() {
                 gapi.client.request({
                     path: '/v4/reports:batchGet',
                     root: 'https://analyticsreporting.googleapis.com/',
@@ -137,47 +140,6 @@
                     }
                 }).then(circleData, console.error.bind(console));
             }
-
-            queryReports();
-
-
-
-            function queryMap() {
-                gapi.client.request({
-                    path: '/v4/reports:batchGet',
-                    root: 'https://analyticsreporting.googleapis.com/',
-                    method: 'POST',
-                    body: {
-                        reportRequests: [
-                            {
-                                viewId: VIEW_ID,
-                                "dimensions": [
-                                    {
-                                        "name":"ga:country"
-                                    },
-                                    {
-                                        "name":"ga:regionIsoCode"
-                                    },
-                                    {
-                                        "name":"ga:countryIsoCode"
-                                    }]
-                            }
-                        ]
-                    }
-                }).then(displayResults, console.error.bind(console));
-            }
-
-            queryMap();
-
-            function displayResults(response) {
-                console.log(response);
-                var formattedJson = JSON.stringify(response.result, null, 2);
-                document.getElementById('query-output').value = formattedJson;
-            }
-
-
-
-
             function circleData(response) {
                 console.log(response);
                 var totals = response.result.reports[0].data.totals[0].values[0];
@@ -228,6 +190,47 @@
                     }]
                 });
             }
+            queryCircle();
+
+
+            // Display map diagram number of visits by countries
+            function queryMap() {
+                gapi.client.request({
+                    path: '/v4/reports:batchGet',
+                    root: 'https://analyticsreporting.googleapis.com/',
+                    method: 'POST',
+                    body: {
+                        reportRequests: [
+                            {
+                                viewId: VIEW_ID,
+                                "dimensions": [
+                                    {
+                                        "name":"ga:country"
+                                    },
+                                    {
+                                        "name":"ga:regionIsoCode"
+                                    },
+                                    {
+                                        "name":"ga:countryIsoCode"
+                                    }]
+                            }
+                        ]
+                    }
+                }).then(displayResults, console.error.bind(console));
+            }
+
+            queryMap();
+
+            function displayResults(response) {
+                console.log(response);
+                var formattedJson = JSON.stringify(response.result, null, 2);
+                document.getElementById('query-output').value = formattedJson;
+            }
+
+
+
+
+
 
 
 
