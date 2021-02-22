@@ -8,11 +8,6 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZG3PVVMWE"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190003462-1"></script>
-
-
-
-
-
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -27,7 +22,6 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
 <script src="https://code.highcharts.com/maps/modules/data.js"></script>
 <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
@@ -38,8 +32,6 @@
 
 <section id="auth-button"></section>
 <section id="view-selector"></section>
-
-
 
 <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -58,10 +50,6 @@
 <!-- The Sign-in button. This will run `queryReports()` on success. -->
 <p class="g-signin2" data-onsuccess="queryReports"></p>
 
-<!-- The API response will be printed here. -->
-<textarea cols="80" rows="20" id="query-output"></textarea>
-
-
 <!-- Step 2: Load the library. -->
 
 <script>
@@ -72,8 +60,6 @@
         fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
     }(window,document,'script'));
 </script>
-
-
 
 <script>
     gapi.analytics.ready(function() {
@@ -116,8 +102,7 @@
             // Replace with your view ID.
             var VIEW_ID = viewId;
 
-
-            // Display circle diagram browsers and numnber of visits statistics
+            // Display circle diagram browsers and number of visits statistics
             function queryCircle() {
                 gapi.client.request({
                     path: '/v4/reports:batchGet',
@@ -313,30 +298,10 @@
 
             queryMap();
 
-            function displayResults(response) {
-                console.log(response);
-                var formattedJson = JSON.stringify(response.result, null, 2);
-                document.getElementById('query-output').value = formattedJson;
-            }
-
-
-
-
-
-
-
-
         });
     });
 
-
-
-
-
-
-
 </script>
-
 
 <!-- Load the JavaScript API client and Sign-in library. -->
 <script src="https://apis.google.com/js/client:platform.js"></script>
