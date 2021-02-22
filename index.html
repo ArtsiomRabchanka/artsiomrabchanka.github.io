@@ -163,7 +163,7 @@
                         type: 'pie'
                     },
                     title: {
-                        text: 'Browser market shares in January, 2018'
+                        text: 'Number of sessions by browser'
                     },
                     tooltip: {
                         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -184,7 +184,7 @@
                         }
                     },
                     series: [{
-                        name: 'Brands',
+                        name: 'Browsers',
                         colorByPoint: true,
                         data: data
                     }]
@@ -238,7 +238,7 @@
                         type: 'pie'
                     },
                     title: {
-                        text: 'Browser market shares in January, 2018'
+                        text: 'Number of sessions by browser'
                     },
                     tooltip: {
                         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -304,14 +304,6 @@
                     name: columns[1][i]
                 });
             });
-            console.log("Highcharts", Highcharts);
-
-            console.log('spreadsheet data', data);
-            data[18] = {
-                code: 'BY',
-                value: 6,
-                name: 'Belarus'
-            }
 
             // Initiate the chart
             Highcharts.mapChart('container', {
@@ -324,7 +316,7 @@
                     'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
 
                 title: {
-                    text: 'Number of users'
+                    text: 'Number of sessions'
                 },
 
                 mapNavigation: {
@@ -333,7 +325,7 @@
 
                 legend: {
                     title: {
-                        text: 'Number of visits per country',
+                        text: 'Number of sessions per country',
                         style: {
                             color: ( // theme
                                 Highcharts.defaultOptions &&
