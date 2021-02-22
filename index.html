@@ -137,14 +137,14 @@
             function circleData(response) {
                 console.log(response);
                 var totals = response.result.reports[0].data.totals[0].values[0];
+                var data = [];
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
-                    var data = [];
                     var dataObject = {
                         name: item.dimensions[0],
                         y: ((item.metrics[0].values[0]) * 100)/totals
                     }
-                    data[dataObject];
+                    data.push(dataObject);
                 });
                 console.log(data);
 
