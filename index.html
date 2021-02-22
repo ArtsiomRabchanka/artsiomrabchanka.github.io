@@ -274,7 +274,7 @@
                     'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
 
                 title: {
-                    text: 'Population density by country (/km²)'
+                    text: 'Number of users'
                 },
 
                 mapNavigation: {
@@ -283,7 +283,7 @@
 
                 legend: {
                     title: {
-                        text: 'Individuals per km²',
+                        text: 'Individuals per country',
                         style: {
                             color: ( // theme
                                 Highcharts.defaultOptions &&
@@ -335,14 +335,11 @@
                     data: data,
                     joinBy: ['iso-a3', 'code'],
                     animation: true,
-                    name: 'Population density',
+                    name: 'Numbers of users',
                     states: {
                         hover: {
                             color: '#a4edba'
                         }
-                    },
-                    tooltip: {
-                        valueSuffix: '/km²'
                     },
                     shadow: false
                 }]
@@ -351,7 +348,7 @@
         error: function () {
             document.getElementById('container').innerHTML = '<div class="loading">' +
                 '<i class="icon-frown icon-large"></i> ' +
-                'Error loading data from Google Spreadsheets' +
+                'Error loading data' +
                 '</div>';
         }
     });
