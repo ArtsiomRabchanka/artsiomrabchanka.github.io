@@ -276,6 +276,8 @@
             javascriptPath = baseMapPath + this.value,
             isHeader = $selectedItem.hasClass('option-header');
 
+        console.log('geojsonPath', geojsonPath);
+
         // Dim or highlight search box
         if (mapDesc === searchText || isHeader) {
             $('.custom-combobox-input').removeClass('valid');
