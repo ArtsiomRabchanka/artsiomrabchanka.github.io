@@ -140,10 +140,33 @@
                             }
                         ]
                     }
-                }).then(circleData, console.error.bind(console)).then(displayResults, console.error.bind(console));
+                }).then(circleData, console.error.bind(console));
             }
 
             queryReports();
+
+
+
+            function queryMap() {
+                gapi.client.request({
+                    path: '/v4/reports:batchGet',
+                    root: 'https://analyticsreporting.googleapis.com/',
+                    method: 'POST',
+                    body: {
+                        reportRequests: [
+                            {
+                                viewId: VIEW_ID,
+                                "dimensions": [
+                                    {
+                                        "name":"ga:country"
+                                    }]
+                            }
+                        ]
+                    }
+                }).then(displayResults, console.error.bind(console));
+            }
+
+            queryMap();
 
             function displayResults(response) {
                 console.log(response);
@@ -203,7 +226,6 @@
                         data: data
                     }]
                 });
-                return response;
             }
 
 
