@@ -217,17 +217,17 @@
             }
             function mapDiagramData(response) {
                 console.log(response);
-                var totals = response.result.reports[0].data.totals[0].values[0];
                 var data = [];
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
                     var dataObject = {
-                        name: item.dimensions[0],
-                        y: ((item.metrics[0].values[0]) * 100)/totals
+                        code: item.dimensions[1],
+                        value: item.metrics[0].values[0],
+                        name: item.dimensions[0]
                     }
                     data.push(dataObject);
                 });
-                console.log(data);
+                console.log("maps data",data);
 
                 // Build the chart
                 Highcharts.chart('container-', {
