@@ -153,16 +153,24 @@
                     root: 'https://analyticsreporting.googleapis.com/',
                     method: 'POST',
                     body: {
-                        reportRequests: [
+                        mapRequests: [
                             {
                                 viewId: VIEW_ID,
                                 "dimensions": [
                                     {
-                                        "name":"ga:country",
+                                        "name":"ga:country"
+                                    }]
+                            }
+                        ],
+                        isoCodeRequest: [
+                            {
+                                viewId: VIEW_ID,
+                                "dimensions": [
+                                    {
                                         "name":"ga:countryIsoCode"
                                     }]
                             }
-                        ]
+                        ],
                     }
                 }).then(displayResults, console.error.bind(console));
             }
