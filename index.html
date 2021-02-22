@@ -138,9 +138,9 @@
                             }
                         ]
                     }
-                }).then(circleData, console.error.bind(console));
+                }).then(circleDiagramData, console.error.bind(console));
             }
-            function circleData(response) {
+            function circleDiagramData(response) {
                 console.log(response);
                 var totals = response.result.reports[0].data.totals[0].values[0];
                 var data = [];
@@ -208,15 +208,62 @@
                                         "name":"ga:country"
                                     },
                                     {
-                                        "name":"ga:regionIsoCode"
-                                    },
-                                    {
                                         "name":"ga:countryIsoCode"
                                     }]
                             }
                         ]
                     }
-                }).then(displayResults, console.error.bind(console));
+                }).then(mapDiagramData, console.error.bind(console));
+            }
+            function mapDiagramData(response) {
+                console.log(response);
+                var totals = response.result.reports[0].data.totals[0].values[0];
+                var data = [];
+                response.result.reports[0].data.rows.forEach(function(item){
+                    console.log(item);
+                    var dataObject = {
+                        name: item.dimensions[0],
+                        y: ((item.metrics[0].values[0]) * 100)/totals
+                    }
+                    data.push(dataObject);
+                });
+                console.log(data);
+
+                // Build the chart
+                Highcharts.chart('container-browsers', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Browser market shares in January, 2018'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    accessibility: {
+                        point: {
+                            valueSuffix: '%'
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            showInLegend: true
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        colorByPoint: true,
+                        data: data
+                    }]
+                });
             }
 
             queryMap();
@@ -249,6 +296,7 @@
 
             // Read the columns into the data array
             var data = [];
+            console.log("Highcharts", Highcharts);
             Highcharts.each(columns[0], function (code, i) {
                 data.push({
                     code: code.toUpperCase(),
