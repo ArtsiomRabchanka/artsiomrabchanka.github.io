@@ -425,22 +425,17 @@
             root: 'https://analyticsreporting.googleapis.com/',
             method: 'POST',
             body: {
-                reportRequests: [
-                    {
-                        viewId: VIEW_ID,
-                        dateRanges: [
-                            {
-                                startDate: '7daysAgo',
-                                endDate: 'today'
-                            }
-                        ],
-                        metrics: [
-                            {
-                                expression: 'ga:sessions'
-                            }
-                        ]
-                    }
-                ]
+                reportRequests: [{
+                    dateRanges: [
+                        {
+                            startDate: Date.parse('2016/10/01'),
+                            endDate: Date.parse('2022/10/31')
+                        }
+                    ],
+                    viewId: VIEW_ID,
+                    metrics: [{ expression: "ga:users" }],
+                    dimensions: [{ name: "ga:pagePath" }, {name: 'ga:date'}]
+                }]
             }
         }).then(displayResults, console.error.bind(console));
     }
