@@ -327,11 +327,12 @@
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
                     console.log("item dimensions",item.dimensions[1]);
-                    if(item.dimensions[1] == startDate) {
-                        data.push(item.metrics[0].values[0] * 1);
-                    } else {
-                        data.push(0);
-                    }
+                    data.push(item.metrics[0].values[0] * 1);
+                    // if(item.dimensions[1] == startDate) {
+                    //     data.push(item.metrics[0].values[0] * 1);
+                    // } else {
+                    //     data.push(0);
+                    // }
                     var year = startDate.substring(0, 4);
                     var month = startDate.substring(4, 6);
                     var day = startDate.substring(6, 8);
