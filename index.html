@@ -325,7 +325,10 @@
                 var data = [];
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
-                    data.push(item.metrics[0].values[0]);
+                    var dataObject = {
+                        y: item.metrics[0].values[0]
+                    }
+                    data.push(dataObject);
                 });
                 console.log(data);
 
@@ -366,16 +369,6 @@
                             pointStart: Date.UTC(2018, 1, 13, 0, 0, 0)
                         }
                     },
-
-                    // plotOptions: {
-                    //     series: {
-                    //         label: {
-                    //             connectorAllowed: false
-                    //         },
-                    //         pointStart: 2
-                    //     }
-                    // },
-
 
                     series: [{
                         data: data
