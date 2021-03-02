@@ -346,6 +346,22 @@
                         }
                     },
 
+                    plotOptions: {
+                        spline: {
+                            lineWidth: 4,
+                            states: {
+                                hover: {
+                                    lineWidth: 5
+                                }
+                            },
+                            marker: {
+                                enabled: false
+                            },
+                            pointInterval: 3600000 * 24, // one day
+                            pointStart: Date.UTC(2018, 1, 13, 0, 0, 0)
+                        }
+                    },
+
                     xAxis: {
                         type: 'datetime',
                         accessibility: {
