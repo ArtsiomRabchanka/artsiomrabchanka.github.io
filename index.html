@@ -325,7 +325,7 @@
                 var data = [];
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
-                    data.push(item.metrics[0].values[0] * 10000);
+                    data.push(item.metrics[0].values[0]);
                 });
                 console.log(data);
 
@@ -341,14 +341,8 @@
                             text: 'Number of Sessions'
                         }
                     },
-
-
-
                     xAxis: {
-                        type: 'datetime',
-                        accessibility: {
-                            rangeDescription: 'Range: 2010 to 2040'
-                        }
+                        type: 'datetime'
                     },
 
                     legend: {
@@ -366,7 +360,7 @@
                                 }
                             },
                             marker: {
-                                enabled: false
+                                enabled: true
                             },
                             pointInterval: 3600000*24, // one day
                             pointStart: Date.UTC(2018, 1, 13, 0, 0, 0)
