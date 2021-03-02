@@ -325,7 +325,7 @@
                 var data = [];
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
-                    data.push(item.metrics[0].values[0]);
+                    data.push(item.metrics[0].values[0] * 10000);
                 });
                 console.log(data);
 
