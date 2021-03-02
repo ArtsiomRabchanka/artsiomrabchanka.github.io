@@ -323,12 +323,16 @@
                 console.log("daily",response);
                 var start = response.result.reports[0].data.rows[0].dimensions[1];
                 var data = [];
+                var startDate = response.result.reports[0].data.rows[0].dimensions[1];
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
-                    var dataObject = {
-                        y: item.metrics[0].values[0]
+                    if(item.dimensions[1] == startDate) {
+                        data.push(item.metrics[0].values[0] * 1);
+                    } else {
+                        data.push(0);
                     }
-                    data.push(item.metrics[0].values[0] * 1);
+                    date      = new Date(item.dimensions[1]);
+                    console.log("date", date);
                 });
                 console.log(data);
 
