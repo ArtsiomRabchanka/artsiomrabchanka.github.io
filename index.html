@@ -321,15 +321,11 @@
             }
             function dailyVisitsDiagramData(response) {
                 console.log("daily",response);
-                var totals = response.result.reports[0].data.totals[0].values[0];
+                var start = response.result.reports[0].data.rows[0].dimensions[1];
                 var data = [];
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
-                    var dataObject = {
-                        name: item.dimensions[0],
-                        y: ((item.metrics[0].values[0]) * 100)/totals
-                    }
-                    data.push(dataObject);
+                    data.push(item.metrics[0].values[0]);
                 });
                 console.log(data);
 
@@ -388,7 +384,7 @@
 
 
                     series: [{
-                        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175, 0]
+                        data: data
                     }],
 
                     responsive: {
