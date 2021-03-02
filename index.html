@@ -326,12 +326,19 @@
                 var startDate = response.result.reports[0].data.rows[0].dimensions[1];
                 response.result.reports[0].data.rows.forEach(function(item){
                     console.log(item);
+                    console.log("item dimensions",item.dimensions[1]);
                     if(item.dimensions[1] == startDate) {
                         data.push(item.metrics[0].values[0] * 1);
                     } else {
                         data.push(0);
                     }
-                    date      = new Date(item.dimensions[1]);
+                    var year = startDate.substring(0, 4);
+                    var month = startDate.substring(4, 6);
+                    var day = startDate.substring(6, 8);
+
+                    displayDate.value = year + '-' + month + '-' + day;
+
+                    date = new Date(displayDate);
                     console.log("date", date);
                 });
                 console.log(data);
