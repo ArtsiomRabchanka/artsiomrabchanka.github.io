@@ -273,10 +273,13 @@ gapi.analytics.ready(function() {
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
                 if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1])) {
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
+                    console.log('push value')
                 } else {
+                    console.log('push 0')
                     data.push(0);
                     startDate = getMillisecondsTime(startDate) + 86400000;
                     i--;
+
                 }
             }
             // response.result.reports[0].data.rows.forEach(function(item){
