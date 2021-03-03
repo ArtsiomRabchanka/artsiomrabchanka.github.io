@@ -271,7 +271,7 @@ gapi.analytics.ready(function() {
             var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
             var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]).getTime();
 
-            for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
+            for(var i=0;i<30;i++) {
                 if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
                     startDate = getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime();
@@ -280,7 +280,7 @@ gapi.analytics.ready(function() {
                     console.log('push 0')
                     data.push(0);
                     startDate = startDate + 86400000;
-                    i--;
+                    // i--;
                 }
             }
             console.log(data);
