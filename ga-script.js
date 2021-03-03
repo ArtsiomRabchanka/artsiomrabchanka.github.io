@@ -261,7 +261,7 @@ gapi.analytics.ready(function() {
             var displayDate = year + '-' + month + '-' + day;
             date = new Date(displayDate);
             console.log("date", date.getTime());
-            return date;
+            return date.getTime();
         }
         function dailyVisitsDiagramData(response) {
             console.log("daily",response);
