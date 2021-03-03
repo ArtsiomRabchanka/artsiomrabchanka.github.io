@@ -276,12 +276,12 @@ gapi.analytics.ready(function() {
                 console.log(i);
                 console.log('milliseconds dimensions',getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]));
                 if(getMillisecondsTime(startDate) == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1])) {
-                    // startDate = response.result.reports[0].data.rows[i].dimensions[1];
+                    startDate = response.result.reports[0].data.rows[i].dimensions[1];
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
                 } else {
                     data.push(0);
-                    // startDate = getMillisecondsTime(startDate) + 86400000;
-                    // i--;
+                    startDate = getMillisecondsTime(startDate) + 86400000;
+                    i--;
                 }
             }
             // response.result.reports[0].data.rows.forEach(function(item){
