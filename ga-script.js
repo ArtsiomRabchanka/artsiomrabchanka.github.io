@@ -272,7 +272,6 @@ gapi.analytics.ready(function() {
 
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
                 if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1])) {
-                    startDate = getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]);
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
                 } else {
                     data.push(0);
