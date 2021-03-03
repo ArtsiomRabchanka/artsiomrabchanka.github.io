@@ -4,9 +4,6 @@
     <title>Embed API Demo</title>
     <meta name="google-signin-client_id" content="533408969378-ue74g5a1epbu0o3cm57pvcvc0764qcb1.apps.googleusercontent.com">
     <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
-    <link rel="manifest" href="/manifest.webmanifest">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZG3PVVMWE"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190003462-1"></script>
     <script>
@@ -412,38 +409,6 @@
 
 <!-- The API response will be printed here. -->
 <textarea style="display:block;" cols="80" rows="20" id="query-output"></textarea>
-
-<script>
-    // Replace with your view ID.
-    var VIEW_ID = '237796885';
-
-    // Query the API and print the results to the page.
-    function queryReports() {
-        gapi.client.request({
-            path: '/v4/reports:batchGet',
-            root: 'https://analyticsreporting.googleapis.com/',
-            method: 'POST',
-            body: {
-                reportRequests: [{
-                    dateRanges: [
-                        {
-                            startDate: '7daysAgo',
-                            endDate: 'today'
-                        }
-                    ],
-                    viewId: VIEW_ID,
-                    metrics: [{ expression: "ga:users" }],
-                    dimensions: [{ name: "ga:pagePath" }, {name: 'ga:date'}]
-                }]
-            }
-        }).then(displayResults, console.error.bind(console));
-    }
-
-    function displayResults(response) {
-        var formattedJson = JSON.stringify(response.result, null, 2);
-        document.getElementById('query-output').value = formattedJson;
-    }
-</script>
 
 <!-- Load the JavaScript API client and Sign-in library. -->
 <script src="https://apis.google.com/js/client:platform.js"></script>
