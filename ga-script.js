@@ -260,7 +260,7 @@ gapi.analytics.ready(function() {
             var data = [];
             var startDate = response.result.reports[0].data.rows[0].dimensions[1];
             console.log('dates length',response.result.reports[0].data.rows.length);
-            for(var i=0;i<=response.result.reports[0].data.rows.length;) {
+            for(var i=0;i<=response.result.reports[0].data.rows.length;i++) {
                 console.log(i);
             }
             response.result.reports[0].data.rows.forEach(function(item){
