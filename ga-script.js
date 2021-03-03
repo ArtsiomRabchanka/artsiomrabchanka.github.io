@@ -268,6 +268,7 @@ gapi.analytics.ready(function() {
             var start = response.result.reports[0].data.rows[0].dimensions[1];
             var data = [];
             console.log('value', response.result.reports[0].data.rows[0].dimensions[1]);
+            var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
             var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
 
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
@@ -281,18 +282,6 @@ gapi.analytics.ready(function() {
                     i--;
                 }
             }
-            // response.result.reports[0].data.rows.forEach(function(item){
-            //     console.log(item);
-            //     console.log("item dimensions",item.dimensions[1]);
-            //     data.push(item.metrics[0].values[0] * 1);
-                // if(item.dimensions[1] == startDate) {
-                //     data.push(item.metrics[0].values[0] * 1);
-                // } else {
-                //     data.push(0);
-                // }
-
-
-            // });
             console.log(data);
 
             // Build the chart
@@ -329,7 +318,7 @@ gapi.analytics.ready(function() {
                             enabled: true
                         },
                         pointInterval: 3600000*24, // one day
-                        pointStart: Date.UTC(2018, 1, 13, 0, 0, 0)
+                        pointStart: Date(startDateY)
                     }
                 },
 
