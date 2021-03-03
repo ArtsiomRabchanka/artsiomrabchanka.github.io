@@ -13,18 +13,14 @@
 
         gtag('config', 'UA-190003462-1');
     </script>
-
-
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-
     <script src="https://code.highcharts.com/maps/highmaps.js"></script>
     <script src="https://code.highcharts.com/maps/modules/data.js"></script>
     <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
     <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
-
     <script>
         (function(w,d,s,g,js,fjs){
             g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(cb){this.q.push(cb)}};
@@ -33,17 +29,11 @@
             fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
         }(window,document,'script'));
     </script>
-
-
-
-
-
-
     <script src="ga-script.js"></script>
+    <!-- Load the JavaScript API client and Sign-in library. -->
+    <script src="https://apis.google.com/js/client:platform.js"></script>
 </head>
 <body>
-
-
 
 <!-- Step 1: Create the containing elements. -->
 
@@ -53,12 +43,7 @@
 <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
-<div id="container">
-    <div class="loading">
-        <i class="icon-spinner icon-spin icon-large"></i>
-        Loading data from Google Spreadsheets...
-    </div>
-</div>
+<div id="container"></div>
 
 <div id="container-daily"></div>
 
@@ -66,16 +51,6 @@
 
 <!-- The Sign-in button. This will run `queryReports()` on success. -->
 <p class="g-signin2" data-onsuccess="queryReports"></p>
-
-<!-- Step 2: Load the library. -->
-
-
-
-
-
-
-<!-- Load the JavaScript API client and Sign-in library. -->
-<script src="https://apis.google.com/js/client:platform.js"></script>
 
 </body>
 </html>
