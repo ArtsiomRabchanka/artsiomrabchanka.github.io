@@ -254,6 +254,15 @@ gapi.analytics.ready(function() {
                 }
             }).then(dailyVisitsDiagramData, console.error.bind(console));
         }
+        function getMillisecondsTime(dateValue) {
+            var year = dateValue.substring(0, 4);
+            var month = dateValue.substring(4, 6);
+            var day = dateValue.substring(6, 8);
+            var displayDate = year + '-' + month + '-' + day;
+            date = new Date(displayDate);
+            console.log("date", date.getTime());
+            return date;
+        }
         function dailyVisitsDiagramData(response) {
             console.log("daily",response);
             var start = response.result.reports[0].data.rows[0].dimensions[1];
@@ -262,8 +271,13 @@ gapi.analytics.ready(function() {
             console.log('dates length',response.result.reports[0].data.rows.length);
             for(var i=0;i<=response.result.reports[0].data.rows.length;i++) {
                 console.log(i);
-                if(i == 2) {
-                    // i--;
+                if(getMillisecondsTime(startDate) == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1])) {
+                    startDate = response.result.reports[0].data.rows[i].dimensions[1];
+                    data.push(item.metrics[0].values[0] * 1);
+                } else {
+                    data.push(0);
+                    startDate = getMillisecondsTime(startDate) + 86400000;
+                    i--;
                 }
             }
             response.result.reports[0].data.rows.forEach(function(item){
@@ -275,14 +289,8 @@ gapi.analytics.ready(function() {
                 // } else {
                 //     data.push(0);
                 // }
-                var year = startDate.substring(0, 4);
-                var month = startDate.substring(4, 6);
-                var day = startDate.substring(6, 8);
 
-                var displayDate = year + '-' + month + '-' + day;
 
-                date = new Date(displayDate);
-                console.log("date", date.getTime());
             });
             console.log(data);
 
