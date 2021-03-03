@@ -262,6 +262,9 @@ gapi.analytics.ready(function() {
             console.log('dates length',response.result.reports[0].data.rows.length);
             for(var i=0;i<=response.result.reports[0].data.rows.length;i++) {
                 console.log(i);
+                if(i == 2) {
+                    i--;
+                }
             }
             response.result.reports[0].data.rows.forEach(function(item){
                 console.log(item);
