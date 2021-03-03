@@ -280,7 +280,7 @@ gapi.analytics.ready(function() {
                 } else {
                     console.log('push 0')
                     data.push(0);
-
+                    startDate = startDate + 86400000;
                     i--;
                 }
             }
