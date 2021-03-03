@@ -280,10 +280,10 @@ gapi.analytics.ready(function() {
                     i--;
                 }
             }
-            response.result.reports[0].data.rows.forEach(function(item){
-                console.log(item);
-                console.log("item dimensions",item.dimensions[1]);
-                data.push(item.metrics[0].values[0] * 1);
+            // response.result.reports[0].data.rows.forEach(function(item){
+            //     console.log(item);
+            //     console.log("item dimensions",item.dimensions[1]);
+            //     data.push(item.metrics[0].values[0] * 1);
                 // if(item.dimensions[1] == startDate) {
                 //     data.push(item.metrics[0].values[0] * 1);
                 // } else {
@@ -291,7 +291,7 @@ gapi.analytics.ready(function() {
                 // }
 
 
-            });
+            // });
             console.log(data);
 
             // Build the chart
