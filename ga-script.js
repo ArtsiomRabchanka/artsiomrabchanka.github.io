@@ -275,11 +275,12 @@ gapi.analytics.ready(function() {
                 if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
                     // startDate = getMillisecondsTime(response.result.reports[0].data.rows[i-1].dimensions[1]).getTime();
+                    startDate = startDate + 86400000;
                     console.log('push value')
                 } else {
                     console.log('push 0')
                     data.push(0);
-                    startDate = startDate + 86400000;
+
                     i--;
                 }
             }
