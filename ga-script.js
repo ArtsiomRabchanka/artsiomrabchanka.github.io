@@ -261,7 +261,7 @@ gapi.analytics.ready(function() {
             var displayDate = year + '-' + month + '-' + day;
             date = new Date(displayDate);
             console.log("date", date.getTime());
-            return date.getTime();
+            return date;
         }
         function dailyVisitsDiagramData(response) {
             console.log("daily",response);
@@ -269,10 +269,10 @@ gapi.analytics.ready(function() {
             var data = [];
             console.log('value', response.result.reports[0].data.rows[0].dimensions[1]);
             var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
-            var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
+            var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]).getTime();
 
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
-                if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1])) {
+                if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
                     console.log('push value')
                 } else {
@@ -318,7 +318,7 @@ gapi.analytics.ready(function() {
                             enabled: true
                         },
                         pointInterval: 3600000*24, // one day
-                        pointStart: Date(startDateY)
+                        pointStart: Date.UTC(startDateY.getFullYear(), startDateY.getMonth(), startDateY.getDate(), 0, 0, 0)
                     }
                 },
 
