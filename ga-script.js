@@ -267,8 +267,8 @@ gapi.analytics.ready(function() {
             console.log("daily",response);
             var start = response.result.reports[0].data.rows[0].dimensions[1];
             var data = [];
+            console.log('value', response.result.reports[0].data.rows[0].dimensions[1]);
             var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
-            console.log('dates length',response.result.reports[0].data.rows.length);
 
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
                 if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1])) {
