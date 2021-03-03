@@ -263,7 +263,7 @@ gapi.analytics.ready(function() {
             for(var i=0;i<=response.result.reports[0].data.rows.length;i++) {
                 console.log(i);
                 if(i == 2) {
-                    i--;
+                    // i--;
                 }
             }
             response.result.reports[0].data.rows.forEach(function(item){
@@ -282,7 +282,7 @@ gapi.analytics.ready(function() {
                 var displayDate = year + '-' + month + '-' + day;
 
                 date = new Date(displayDate);
-                console.log("date", date);
+                console.log("date", date.getTime());
             });
             console.log(data);
 
