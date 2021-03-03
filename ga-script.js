@@ -279,7 +279,6 @@ gapi.analytics.ready(function() {
                     data.push(0);
                     startDate = startDate + 86400000;
                     i--;
-
                 }
             }
             // response.result.reports[0].data.rows.forEach(function(item){
