@@ -171,7 +171,7 @@ gapi.analytics.ready(function() {
                     type: 'pie'
                 },
                 title: {
-                    text: 'Number of sessions by browser'
+                    text: 'Number of sessions by device'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -192,7 +192,7 @@ gapi.analytics.ready(function() {
                     }
                 },
                 series: [{
-                    name: 'Browsers',
+                    name: 'Devices',
                     colorByPoint: true,
                     data: data
                 }]
