@@ -48,6 +48,12 @@ gapi.analytics.ready(function() {
                     reportRequests: [
                         {
                             viewId: VIEW_ID,
+                            dateRanges: [
+                                {
+                                    startDate: '30daysAgo',
+                                    endDate: 'today'
+                                }
+                            ],
                             "metrics":[
                                 {
                                     "expression":"ga:sessions"
@@ -123,13 +129,19 @@ gapi.analytics.ready(function() {
                     reportRequests: [
                         {
                             viewId: VIEW_ID,
+                            dateRanges: [
+                                {
+                                    startDate: '30daysAgo',
+                                    endDate: 'today'
+                                }
+                            ],
                             "metrics":[
                                 {
                                     "expression":"ga:sessions"
                                 }],
                             "dimensions": [
                                 {
-                                    "name":"ga:browser"
+                                    "name":"ga:deviceCategory"
                                 }]
                         }
                     ]
