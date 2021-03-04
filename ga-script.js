@@ -113,6 +113,81 @@ gapi.analytics.ready(function() {
         }
         queryCircle();
 
+        // Display circle diagram browsers and number of visits statistics
+        function queryCircleDevices() {
+            gapi.client.request({
+                path: '/v4/reports:batchGet',
+                root: 'https://analyticsreporting.googleapis.com/',
+                method: 'POST',
+                body: {
+                    reportRequests: [
+                        {
+                            viewId: VIEW_ID,
+                            "metrics":[
+                                {
+                                    "expression":"ga:sessions"
+                                }],
+                            "dimensions": [
+                                {
+                                    "name":"ga:browser"
+                                }]
+                        }
+                    ]
+                }
+            }).then(circleDiagramDevicesData, console.error.bind(console));
+        }
+        function circleDiagramDevicesData(response) {
+            console.log(response);
+            var totals = response.result.reports[0].data.totals[0].values[0];
+            var data = [];
+            response.result.reports[0].data.rows.forEach(function(item){
+                console.log(item);
+                var dataObject = {
+                    name: item.dimensions[0],
+                    y: ((item.metrics[0].values[0]) * 100)/totals
+                }
+                data.push(dataObject);
+            });
+            console.log(data);
+
+            // Build the chart
+            Highcharts.chart('container-devices', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Number of sessions by browser'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: 'Browsers',
+                    colorByPoint: true,
+                    data: data
+                }]
+            });
+        }
+        queryCircleDevices();
+
 
         // Display map diagram number of visits by countries
         function queryMap() {
