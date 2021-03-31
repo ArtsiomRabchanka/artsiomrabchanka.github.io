@@ -4,7 +4,7 @@ gapi.analytics.ready(function() {
 
     // Step 3: Authorize the user.
 
-    var CLIENT_ID = '533408969378-ue74g5a1epbu0o3cm57pvcvc0764qcb1.apps.googleusercontent.com';
+    var CLIENT_ID = '302333126777-h88e8uomqbdkli3qimnf66jt5u9k48jb.apps.googleusercontent.com';
 
     gapi.analytics.auth.authorize({
         container: 'auth-button',
