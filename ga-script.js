@@ -321,118 +321,118 @@ gapi.analytics.ready(function() {
         queryMap();
 
         // Display circle diagram browsers and number of visits statistics
-        function queryDailyVisits() {
-            gapi.client.request({
-                path: '/v4/reports:batchGet',
-                root: 'https://analyticsreporting.googleapis.com/',
-                method: 'POST',
-                body: {
-                    reportRequests: [{
-                        dateRanges: [
-                            {
-                                startDate: '30daysAgo',
-                                endDate: 'today'
-                            }
-                        ],
-                        viewId: VIEW_ID,
-                        metrics: [{ expression: "ga:users" }],
-                        dimensions: [{ name: "ga:pagePath" }, {name: 'ga:date'}]
-                    }]
-                }
-            }).then(dailyVisitsDiagramData, console.error.bind(console));
-        }
-        function getMillisecondsTime(dateValue) {
-            var year = dateValue.substring(0, 4);
-            var month = dateValue.substring(4, 6);
-            var day = dateValue.substring(6, 8);
-            var displayDate = year + '-' + month + '-' + day;
-            date = new Date(displayDate);
-            console.log("date", date.getTime());
-            return date;
-        }
-        function dailyVisitsDiagramData(response) {
-            console.log("daily",response);
-            var start = response.result.reports[0].data.rows[0].dimensions[1];
-            var data = [];
-            console.log('value', response.result.reports[0].data.rows[0].dimensions[1]);
-            var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
-            var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]).getTime();
-
-            for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
-                if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
-                    data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
-                    // startDate = getMillisecondsTime(response.result.reports[0].data.rows[i-1].dimensions[1]).getTime();
-                    startDate = startDate + 86400000;
-                    console.log('push value')
-                } else {
-                    console.log('push 0')
-                    data.push(0);
-                    startDate = startDate + 86400000;
-                    i--;
-                }
-            }
-            console.log(data);
-
-            // Build the chart
-            Highcharts.chart('container-daily', {
-
-                title: {
-                    text: 'Number Of Users'
-                },
-
-                yAxis: {
-                    title: {
-                        text: 'Number of Sessions'
-                    }
-                },
-                xAxis: {
-                    type: 'datetime'
-                },
-
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
-                plotOptions: {
-                    series: {
-                        lineWidth: 4,
-                        states: {
-                            hover: {
-                                lineWidth: 5
-                            }
-                        },
-                        marker: {
-                            enabled: true
-                        },
-                        pointInterval: 3600000*24, // one day
-                        pointStart: Date.UTC(startDateY.getFullYear(), startDateY.getMonth(), startDateY.getDate(), 0, 0, 0)
-                    }
-                },
-
-                series: [{
-                    data: data
-                }],
-
-                responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 500
-                        },
-                        chartOptions: {
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom'
-                            }
-                        }
-                    }]
-                }
-
-            });
-        }
-        queryDailyVisits();
+        // function queryDailyVisits() {
+        //     gapi.client.request({
+        //         path: '/v4/reports:batchGet',
+        //         root: 'https://analyticsreporting.googleapis.com/',
+        //         method: 'POST',
+        //         body: {
+        //             reportRequests: [{
+        //                 dateRanges: [
+        //                     {
+        //                         startDate: '30daysAgo',
+        //                         endDate: 'today'
+        //                     }
+        //                 ],
+        //                 viewId: VIEW_ID,
+        //                 metrics: [{ expression: "ga:users" }],
+        //                 dimensions: [{ name: "ga:pagePath" }, {name: 'ga:date'}]
+        //             }]
+        //         }
+        //     }).then(dailyVisitsDiagramData, console.error.bind(console));
+        // }
+        // function getMillisecondsTime(dateValue) {
+        //     var year = dateValue.substring(0, 4);
+        //     var month = dateValue.substring(4, 6);
+        //     var day = dateValue.substring(6, 8);
+        //     var displayDate = year + '-' + month + '-' + day;
+        //     date = new Date(displayDate);
+        //     console.log("date", date.getTime());
+        //     return date;
+        // }
+        // function dailyVisitsDiagramData(response) {
+        //     console.log("daily",response);
+        //     var start = response.result.reports[0].data.rows[0].dimensions[1];
+        //     var data = [];
+        //     console.log('value', response.result.reports[0].data.rows[0].dimensions[1]);
+        //     var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
+        //     var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]).getTime();
+        //
+        //     for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
+        //         if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
+        //             data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
+        //             // startDate = getMillisecondsTime(response.result.reports[0].data.rows[i-1].dimensions[1]).getTime();
+        //             startDate = startDate + 86400000;
+        //             console.log('push value')
+        //         } else {
+        //             console.log('push 0')
+        //             data.push(0);
+        //             startDate = startDate + 86400000;
+        //             i--;
+        //         }
+        //     }
+        //     console.log(data);
+        //
+        //     // Build the chart
+        //     Highcharts.chart('container-daily', {
+        //
+        //         title: {
+        //             text: 'Number Of Users'
+        //         },
+        //
+        //         yAxis: {
+        //             title: {
+        //                 text: 'Number of Sessions'
+        //             }
+        //         },
+        //         xAxis: {
+        //             type: 'datetime'
+        //         },
+        //
+        //         legend: {
+        //             layout: 'vertical',
+        //             align: 'right',
+        //             verticalAlign: 'middle'
+        //         },
+        //
+        //         plotOptions: {
+        //             series: {
+        //                 lineWidth: 4,
+        //                 states: {
+        //                     hover: {
+        //                         lineWidth: 5
+        //                     }
+        //                 },
+        //                 marker: {
+        //                     enabled: true
+        //                 },
+        //                 pointInterval: 3600000*24, // one day
+        //                 pointStart: Date.UTC(startDateY.getFullYear(), startDateY.getMonth(), startDateY.getDate(), 0, 0, 0)
+        //             }
+        //         },
+        //
+        //         series: [{
+        //             data: data
+        //         }],
+        //
+        //         responsive: {
+        //             rules: [{
+        //                 condition: {
+        //                     maxWidth: 500
+        //                 },
+        //                 chartOptions: {
+        //                     legend: {
+        //                         layout: 'horizontal',
+        //                         align: 'center',
+        //                         verticalAlign: 'bottom'
+        //                     }
+        //                 }
+        //             }]
+        //         }
+        //
+        //     });
+        // }
+        // queryDailyVisits();
 
     });
 });
