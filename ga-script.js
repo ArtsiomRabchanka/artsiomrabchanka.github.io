@@ -355,8 +355,8 @@ gapi.analytics.ready(function() {
             var start = response.result.reports[0].data.rows[0].dimensions[1];
             var data = [];
             console.log('value', response.result.reports[0].data.rows[0].dimensions[1]);
-            // var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
-            // var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]).getTime();
+            var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
+            var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]).getTime();
 
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
                 // if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
