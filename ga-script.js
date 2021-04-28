@@ -434,5 +434,44 @@ gapi.analytics.ready(function() {
         }
         queryDailyVisits();
 
+        // Display sessions information
+        function querySessionInfo() {
+            gapi.client.request({
+                path: '/v4/reports:batchGet',
+                root: 'https://analyticsreporting.googleapis.com/',
+                method: 'POST',
+                body: {
+                    reportRequests: [
+                        {
+                            viewId: VIEW_ID,
+                            dateRanges: [
+                                {
+                                    startDate: '30daysAgo',
+                                    endDate: 'today'
+                                }
+                            ],
+                            "metrics":[
+                                {
+                                    "expression":"ga:avgSessionDuration"
+                                },{
+                                    "expression":"ga:percentNewSessions"
+                                },{
+                                    "expression":"ga:bounceRate"
+                                },{
+                                    "expression":"ga:sessions"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }).then(sessionInfoData, console.error.bind(console));
+        }
+        function sessionInfoData(response) {
+            console.log('session response', response);
+
+
+        }
+        querySessionInfo();
+
     });
 });
