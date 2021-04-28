@@ -336,7 +336,7 @@ gapi.analytics.ready(function() {
                         ],
                         viewId: VIEW_ID,
                         metrics: [{ expression: "ga:users" }],
-                        dimensions: [{ name: "ga:pagePath" }, {name: 'ga:date'}]
+                        dimensions: [{name: 'ga:date'}]
                     }]
                 }
             }).then(dailyVisitsDiagramData, console.error.bind(console));
@@ -359,20 +359,19 @@ gapi.analytics.ready(function() {
             var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]).getTime();
 
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
-                // if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
+                if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
                     // startDate = getMillisecondsTime(response.result.reports[0].data.rows[i-1].dimensions[1]).getTime();
-                    // startDate = startDate + 86400000;
-                    console.log('push value')
-                // }
-                // else {
-                //     console.log('push 0')
-                //     data.push(0);
-                //     startDate = startDate + 86400000;
-                //     i--;
-                // }
+                    startDate = startDate + 86400000;
+//                     console.log('push value')
+                } else {
+//                     console.log('push 0')
+                    data.push(0);
+                    startDate = startDate + 86400000;
+                    i--;
+                }
             }
-            console.log('data',data);
+            console.log(data);
 
             // Build the chart
             Highcharts.chart('container-daily', {
