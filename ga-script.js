@@ -372,7 +372,7 @@ gapi.analytics.ready(function() {
                 //     i--;
                 // }
             }
-            console.log(data);
+            console.log('data',data);
 
             // Build the chart
             Highcharts.chart('container-daily', {
