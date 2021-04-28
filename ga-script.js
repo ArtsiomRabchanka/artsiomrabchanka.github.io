@@ -331,7 +331,7 @@ gapi.analytics.ready(function() {
                         dateRanges: [
                             {
                                 startDate: '30daysAgo',
-                                endDate: 'today'
+                                endDate: 'yesterday'
                             }
                         ],
                         viewId: VIEW_ID,
@@ -352,20 +352,20 @@ gapi.analytics.ready(function() {
         }
         function dailyVisitsDiagramData(response) {
             console.log("daily",response);
-            var start = response.result.reports[0].data.rows[0].dimensions[1];
             var data = [];
-            console.log('value', response.result.reports[0].data.rows[0].dimensions[1]);
-            var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]);
-            var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[1]).getTime();
+            var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[0]);
+            var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[0]).getTime();
+            console.log('startDateY',startDateY);
+            console.log('startDate',startDate);
 
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
-                if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[1]).getTime()) {
+                if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[0]).getTime()) {
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
-                    // startDate = getMillisecondsTime(response.result.reports[0].data.rows[i-1].dimensions[1]).getTime();
+                    startDate = getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[0]).getTime();
                     startDate = startDate + 86400000;
-//                     console.log('push value')
+                    console.log('push value',response.result.reports[0].data.rows[i].metrics[0].values[0])
                 } else {
-//                     console.log('push 0')
+                    console.log('push 0')
                     data.push(0);
                     startDate = startDate + 86400000;
                     i--;
