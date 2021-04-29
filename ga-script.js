@@ -29,11 +29,9 @@ gapi.analytics.ready(function() {
                 ids: ids
             }
         }
-        console.log(newIds);
         // var viewIdGa = newIds.query.ids;
         // var viewIdValue = viewIdGa.str.replace("ga:", "");
         var viewId = newIds.query.ids.replace("ga:", "");
-        console.log(viewId);
 
         // Replace with your view ID.
         var VIEW_ID = viewId;
@@ -68,18 +66,15 @@ gapi.analytics.ready(function() {
             }).then(circleDiagramData, console.error.bind(console));
         }
         function circleDiagramData(response) {
-            console.log(response);
             var totals = response.result.reports[0].data.totals[0].values[0];
             var data = [];
             response.result.reports[0].data.rows.forEach(function(item){
-                console.log(item);
                 var dataObject = {
                     name: item.dimensions[0],
                     y: ((item.metrics[0].values[0]) * 100)/totals
                 }
                 data.push(dataObject);
             });
-            console.log(data);
 
             // Build the chart
             Highcharts.chart('container-browsers', {
@@ -149,18 +144,15 @@ gapi.analytics.ready(function() {
             }).then(circleDiagramDevicesData, console.error.bind(console));
         }
         function circleDiagramDevicesData(response) {
-            console.log(response);
             var totals = response.result.reports[0].data.totals[0].values[0];
             var data = [];
             response.result.reports[0].data.rows.forEach(function(item){
-                console.log(item);
                 var dataObject = {
                     name: item.dimensions[0],
                     y: ((item.metrics[0].values[0]) * 100)/totals
                 }
                 data.push(dataObject);
             });
-            console.log(data);
 
             // Build the chart
             Highcharts.chart('container-devices', {
@@ -224,10 +216,8 @@ gapi.analytics.ready(function() {
             }).then(mapDiagramData, console.error.bind(console));
         }
         function mapDiagramData(response) {
-            console.log(response);
             var data = [];
             response.result.reports[0].data.rows.forEach(function(item){
-                console.log(item);
                 var dataObject = {
                     code: item.dimensions[1],
                     value: item.metrics[0].values[0],
@@ -235,7 +225,6 @@ gapi.analytics.ready(function() {
                 }
                 data.push(dataObject);
             });
-            console.log("maps data",data);
 
             Highcharts.mapChart('container', {
                 chart: {
@@ -347,31 +336,24 @@ gapi.analytics.ready(function() {
             var day = dateValue.substring(6, 8);
             var displayDate = year + '-' + month + '-' + day;
             date = new Date(displayDate);
-            console.log("date", date.getTime());
             return date;
         }
         function dailyVisitsDiagramData(response) {
-            console.log("daily",response);
             var data = [];
             var startDateY = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[0]);
             var startDate = getMillisecondsTime(response.result.reports[0].data.rows[0].dimensions[0]).getTime();
-            console.log('startDateY',startDateY);
-            console.log('startDate',startDate);
 
             for(var i=0;i<response.result.reports[0].data.rows.length;i++) {
                 if(startDate == getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[0]).getTime()) {
                     data.push(response.result.reports[0].data.rows[i].metrics[0].values[0] * 1);
                     startDate = getMillisecondsTime(response.result.reports[0].data.rows[i].dimensions[0]).getTime();
                     startDate = startDate + 86400000;
-                    console.log('push value',response.result.reports[0].data.rows[i].metrics[0].values[0])
                 } else {
-                    console.log('push 0')
                     data.push(0);
                     startDate = startDate + 86400000;
                     i--;
                 }
             }
-            console.log(data);
 
             // Build the chart
             Highcharts.chart('container-daily', {
@@ -459,6 +441,10 @@ gapi.analytics.ready(function() {
                                     "expression":"ga:bounceRate"
                                 },{
                                     "expression":"ga:sessions"
+                                },{
+                                    "expression":"ga:pageviewsPerSession"
+                                },{
+                                    "expression":"ga:goalCompletionsAll"
                                 }
                             ]
                         }
@@ -468,8 +454,12 @@ gapi.analytics.ready(function() {
         }
         function sessionInfoData(response) {
             console.log('session response', response);
-
-
+            $('#avgSessionDuration').text(response.result.reports[0].data.rows[0].metrics[0].values[0]);
+            $('#percentNewSessions').text(response.result.reports[0].data.rows[0].metrics[0].values[1]);
+            $('#bounceRate').text(response.result.reports[0].data.rows[0].metrics[0].values[2]);
+            $('#sessions').text(response.result.reports[0].data.rows[0].metrics[0].values[3]);
+            $('#pageviewsPerSession').text(response.result.reports[0].data.rows[0].metrics[0].values[4]);
+            $('#goalCompletionsAll').text(response.result.reports[0].data.rows[0].metrics[0].values[5]);
         }
         querySessionInfo();
 
