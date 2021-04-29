@@ -453,13 +453,12 @@ gapi.analytics.ready(function() {
             }).then(sessionInfoData, console.error.bind(console));
         }
         function sessionInfoData(response) {
-            console.log('session response', response);
-            $('#avgSessionDuration').text(response.result.reports[0].data.rows[0].metrics[0].values[0]);
-            $('#percentNewSessions').text(response.result.reports[0].data.rows[0].metrics[0].values[1]);
-            $('#bounceRate').text(response.result.reports[0].data.rows[0].metrics[0].values[2]);
-            $('#sessions').text(response.result.reports[0].data.rows[0].metrics[0].values[3]);
-            $('#pageviewsPerSession').text(response.result.reports[0].data.rows[0].metrics[0].values[4]);
-            $('#goalCompletionsAll').text(response.result.reports[0].data.rows[0].metrics[0].values[5]);
+            document.getElementById('avgSessionDuration').innerHTML = Math.floor(response.result.reports[0].data.rows[0].metrics[0].values[0]);
+            document.getElementById('percentNewSessions').innerHTML = Math.floor(response.result.reports[0].data.rows[0].metrics[0].values[1]);
+            document.getElementById('bounceRate').innerHTML = Math.floor(response.result.reports[0].data.rows[0].metrics[0].values[2]);
+            document.getElementById('sessions').innerHTML = Math.floor(response.result.reports[0].data.rows[0].metrics[0].values[3]);
+            document.getElementById('pageviewsPerSession').innerHTML = Math.floor(response.result.reports[0].data.rows[0].metrics[0].values[4]);
+            document.getElementById('goalCompletionsAll').innerHTML = Math.floor(response.result.reports[0].data.rows[0].metrics[0].values[5]);
         }
         querySessionInfo();
 
